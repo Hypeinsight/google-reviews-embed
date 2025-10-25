@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# post-merge hook
+# Automatically updates CHANGE_LOG.md and TECH_STACK.md after each merge
+
+echo "Running post-merge hooks..."
+
+# Update changelog
+if ! node scripts/update_changelog.js; then
+  echo "Warning: Failed to update changelog (non-fatal)"
+fi
+
+# Update tech stack
+if ! node scripts/update_tech_stack.js; then
+  echo "Warning: Failed to update tech stack (non-fatal)"
+fi
+
+exit 0
