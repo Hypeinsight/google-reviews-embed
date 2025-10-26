@@ -12,6 +12,7 @@ const log_1 = require("./log");
 const feedback_1 = require("./feedback");
 const db_1 = require("./db");
 const team_users_1 = require("./team-users");
+const clients_1 = require("./clients");
 // Load environment variables
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -61,6 +62,11 @@ app.post('/api/team-users', team_users_1.createTeamUser);
 app.put('/api/team-users/:id', team_users_1.updateTeamUser);
 app.delete('/api/team-users/:id', team_users_1.deleteTeamUser);
 app.post('/api/team-users/:id/reset-password', team_users_1.resetPassword);
+// Client management routes
+app.get('/api/clients', clients_1.getClients);
+app.post('/api/clients', clients_1.createClient);
+app.put('/api/clients/:tenantId', clients_1.updateClient);
+app.delete('/api/clients/:tenantId', clients_1.deleteClient);
 // Root endpoint - redirect to admin
 app.get('/', (req, res) => {
     res.redirect('/admin/');

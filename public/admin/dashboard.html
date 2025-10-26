@@ -721,22 +721,38 @@
       }
     };
 
+    let clientsData = [];
+
+    async function loadClients() {
+      try {
+        const response = await fetch('/api/clients');
+        const data = await response.json();
+        if (data.success) {
+          clientsData = data.clients;
+          renderClients();
+        }
+      } catch (error) {
+        console.error('Failed to load clients:', error);
+      }
+    }
+
     function renderClients() {
       const grid = document.getElementById('clientsGrid');
       grid.innerHTML = '';
 
-      Object.keys(clientsData).forEach(tenantId => {
-        const client = clientsData[tenantId];
-        const locationCount = Object.values(client.sites).reduce((sum, site) => 
-          sum + Object.keys(site.locations).length, 0);
+      clientsData.forEach(client => {
+        const tenantId = client.tenant_id;
+        const sites = client.sites || [];
+        const locationCount = sites.reduce((sum, site) => 
+          (site.locations || []).length + sum, 0);
         
         const card = document.createElement('div');
         card.className = 'client-card';
-        card.onclick = () => openClientDetail(tenantId);
+        card.onclick = () => openClientDetail(client);
         card.innerHTML = 
           '<div class="client-card-header">' +
             '<div>' +
-              '<div class="client-name">' + client.name + '</div>' +
+              '<div class="client-name">' + client.client_name + '</div>' +
               '<span class="client-id">' + tenantId + '</span>' +
             '</div>' +
             '<span class="badge badge-success">Active</span>' +
@@ -845,92 +861,109 @@
       return null;
     }
 
-    function saveClient(e) {
+    async function saveClient(e) {
       e.preventDefault();
       
       const clientName = document.getElementById('clientName').value;
-      const tenantId = 'tenant_' + clientName.toLowerCase().replace(/[^a-z0-9]/g, '_');
       const siteDomain = document.getElementById('siteDomain').value;
       const buttonText = document.getElementById('buttonText').value || 'Leave a Review';
       const buttonColor = document.getElementById('buttonColor').value;
       const whiteLabel = document.getElementById('whiteLabel').checked;
       
       const locationInputs = document.querySelectorAll('.location-input');
-      const locations = {};
+      const locations = [];
       
-      locationInputs.forEach((input, idx) => {
+      locationInputs.forEach((input) => {
         const name = input.querySelector('.location-name').value;
         const link = input.querySelector('.location-link').value;
         if (name && link) {
           const placeId = extractPlaceId(link) || link;
-          locations['loc_' + tenantId + '_' + idx] = { name, placeId };
+          locations.push({ name, placeId });
         }
       });
 
-      // Add to clientsData
-      clientsData[tenantId] = {
-        name: clientName,
-        sites: {
-          ['site_' + tenantId + '_main']: {
-            name: clientName + ' Website',
+      try {
+        const response = await fetch('/api/clients', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: clientName,
             domain: siteDomain,
-            locations: locations,
-            buttonText: buttonText,
-            buttonColor: buttonColor,
-            whiteLabel: whiteLabel
-          }
-        },
-        reviewCount: 0,
-        feedback: []
-      };
-
-      renderClients();
-      closeClientModal();
-      alert('✅ Client created successfully!');
+            buttonText,
+            buttonColor,
+            whiteLabel,
+            locations
+          })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+          alert('✅ Client created successfully!');
+          closeClientModal();
+          loadClients();
+        } else {
+          alert('Error: ' + data.error);
+        }
+      } catch (error) {
+        alert('Failed to create client: ' + error.message);
+      }
     }
 
-  function openClientDetail(tenantId) {
+  function openClientDetail(client) {
+    const tenantId = client.tenant_id;
     currentClientTenantId = tenantId;
-    const client = clientsData[tenantId];
-      document.getElementById('detailClientName').textContent = client.name;
+    currentClient = client;
+    document.getElementById('detailClientName').textContent = client.client_name;
       
       // Get first site for settings
-      const firstSite = Object.values(client.sites)[0];
-      document.getElementById('detailButtonText').textContent = firstSite.buttonText || 'Leave a Review';
-      document.getElementById('detailButtonColor').style.background = firstSite.buttonColor || '#667eea';
-      const whiteLabelBadge = firstSite.whiteLabel 
+      const firstSite = client.sites && client.sites[0];
+      if (firstSite) {
+        document.getElementById('detailButtonText').textContent = firstSite.button_text || 'Leave a Review';
+        document.getElementById('detailButtonColor').style.background = firstSite.button_color || '#667eea';
+      }
+      const whiteLabelBadge = firstSite && firstSite.white_label
         ? '<span class="badge" style="background: #fef3c7; color: #92400e;">Enabled</span>' 
         : '<span class="badge" style="background: #dbeafe; color: #1e40af;">Disabled</span>';
       document.getElementById('detailWhiteLabel').innerHTML = whiteLabelBadge;
       
       // Render locations
       let locationsHtml = '';
-      Object.values(client.sites).forEach(site => {
-        Object.entries(site.locations).forEach(([locId, loc]) => {
-          locationsHtml += '<div class="location-item">' +
-            '<h4>' + loc.name + '</h4>' +
-            '<code>' + loc.placeId + '</code>' +
-            '</div>';
+      if (client.sites) {
+        client.sites.forEach(site => {
+          if (site.locations) {
+            site.locations.forEach(loc => {
+              locationsHtml += '<div class="location-item">' +
+                '<h4>' + loc.name + '</h4>' +
+                '<code>' + loc.place_id + '</code>' +
+                '</div>';
+            });
+          }
         });
-      });
+      }
       document.getElementById('detailLocations').innerHTML = locationsHtml;
 
       // Render embed codes
       let embedHtml = '';
-      Object.entries(client.sites).forEach(([siteId, site]) => {
-        Object.entries(site.locations).forEach(([locId, loc]) => {
-          var scriptDomain = 'https://reviews.hypeawareness.com'; // Production domain
-          var apiDomain = 'https://reviews.hypeawareness.com'; // API endpoint
-          
-          var embedCode = '<script src="' + scriptDomain + '/embed/embed-v2.js" async data-tenant-id="' + tenantId + '" data-site-id="' + siteId + '" data-location-id="' + locId + '" data-button-text="' + (site.buttonText || 'Leave a Review') + '" data-button-color="' + (site.buttonColor || '#46B646') + '" data-white-label="' + (site.whiteLabel ? 'true' : 'false') + '" data-api-url="' + apiDomain + '"><\/script>';
-          
-          embedHtml += '<div style="margin-bottom: 24px;" data-embed-code="' + embedCode.replace(/"/g, '&quot;') + '">' +
-            '<h4 style="margin-bottom: 8px;">' + loc.name + '</h4>' +
-            '<div class="embed-code">' + embedCode.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>' +
-            '<button class="btn btn-secondary" onclick="copyEmbedFromParent(this)" style="margin-top: 8px;">📋 Copy Code</button>' +
-            '</div>';
+      if (client.sites) {
+        client.sites.forEach(site => {
+          const siteId = site.site_id;
+          if (site.locations) {
+            site.locations.forEach(loc => {
+              const locId = loc.location_id;
+              var scriptDomain = 'https://reviews.hypeawareness.com';
+              var apiDomain = 'https://reviews.hypeawareness.com';
+              
+              var embedCode = '<script src="' + scriptDomain + '/embed/embed-v2.js" async data-tenant-id="' + tenantId + '" data-site-id="' + siteId + '" data-location-id="' + locId + '" data-button-text="' + (site.button_text || 'Leave a Review') + '" data-button-color="' + (site.button_color || '#46B646') + '" data-white-label="' + (site.white_label ? 'true' : 'false') + '" data-api-url="' + apiDomain + '"><\/script>';
+              
+              embedHtml += '<div style="margin-bottom: 24px;" data-embed-code="' + embedCode.replace(/"/g, '&quot;') + '">' +
+                '<h4 style="margin-bottom: 8px;">' + loc.name + '</h4>' +
+                '<div class="embed-code">' + embedCode.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>' +
+                '<button class="btn btn-secondary" onclick="copyEmbedFromParent(this)" style="margin-top: 8px;">📋 Copy Code</button>' +
+                '</div>';
+            });
+          }
         });
-      });
+      }
       document.getElementById('embedCodes').innerHTML = embedHtml;
 
       // Render QR codes
@@ -982,6 +1015,7 @@
     }
 
   let currentClientTenantId = null;
+  let currentClient = null;
 
   function closeClientDetail() {
     document.getElementById('clientDetailModal').classList.remove('active');
@@ -1096,7 +1130,7 @@
 
     // Initialize
     checkSession();
-    renderClients();
+    loadClients();
   </script>
 </body>
 </html>

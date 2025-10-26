@@ -336,3 +336,18 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/admin/dashboard.html
+
+---
+
+**2025-10-26T07:05:54.978Z** | Branch: `main` | Commit: `51425b7`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Update login credentials to use secure password
+
+**Files changed:**
+  - db/migration_enhanced_feedback.sql
+  - docs/CHANGE_LOG.md
+  - public/admin/index.html
+  - scripts/change_admin_password.js
+  - scripts/run_migration.js

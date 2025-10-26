@@ -7,6 +7,7 @@ import { logEvent } from './log';
 import { submitFeedback } from './feedback';
 import { testConnection } from './db';
 import { getTeamUsers, createTeamUser, updateTeamUser, deleteTeamUser, resetPassword } from './team-users';
+import { getClients, createClient, updateClient, deleteClient } from './clients';
 
 // Load environment variables
 dotenv.config();
@@ -66,6 +67,12 @@ app.post('/api/team-users', createTeamUser);
 app.put('/api/team-users/:id', updateTeamUser);
 app.delete('/api/team-users/:id', deleteTeamUser);
 app.post('/api/team-users/:id/reset-password', resetPassword);
+
+// Client management routes
+app.get('/api/clients', getClients);
+app.post('/api/clients', createClient);
+app.put('/api/clients/:tenantId', updateClient);
+app.delete('/api/clients/:tenantId', deleteClient);
 
 // Root endpoint - redirect to admin
 app.get('/', (req: Request, res: Response) => {
