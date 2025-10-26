@@ -699,6 +699,8 @@
     }
 
     function openAddClientModal() {
+      currentClientTenantId = null;
+      currentClient = null;
       document.getElementById('modalTitle').textContent = 'Add New Client';
       document.getElementById('clientForm').reset();
       document.getElementById('clientModal').classList.add('active');
@@ -806,8 +808,13 @@
       });
 
       try {
-        const response = await fetch('/api/clients', {
-          method: 'POST',
+        // Determine if creating or updating
+        const isEditing = currentClientTenantId !== null;
+        const url = isEditing ? `/api/clients/${currentClientTenantId}` : '/api/clients';
+        const method = isEditing ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+          method,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name: clientName,
@@ -821,14 +828,14 @@
         
         const data = await response.json();
         if (data.success) {
-          alert('✅ Client created successfully!');
+          alert(isEditing ? '✅ Client updated successfully!' : '✅ Client created successfully!');
           closeClientModal();
           loadClients();
         } else {
           alert('Error: ' + data.error);
         }
       } catch (error) {
-        alert('Failed to create client: ' + error.message);
+        alert('Failed to save client: ' + error.message);
       }
     }
 
