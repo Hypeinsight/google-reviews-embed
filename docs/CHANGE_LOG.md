@@ -391,3 +391,16 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/admin/dashboard.html
+
+---
+
+**2025-10-26T08:18:43.668Z** | Branch: `main` | Commit: `c448e6d`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix CORS error blocking admin API calls
+
+**Files changed:**
+  - api/index.ts
+  - dist/api/index.js
+  - docs/CHANGE_LOG.md

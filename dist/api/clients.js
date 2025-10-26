@@ -88,6 +88,8 @@ async function createClient(req, res) {
                 if (loc.name && loc.placeId) {
                     const locationId = `loc_${tenantId}_${i}`;
                     await (0, db_1.query)('INSERT INTO locations (id, tenant_id, place_id, name, active) VALUES ($1, $2, $3, $4, TRUE)', [locationId, tenantId, loc.placeId, loc.name]);
+                    // Link location to site
+                    await (0, db_1.query)('INSERT INTO site_locations (site_id, location_id) VALUES ($1, $2)', [siteId, locationId]);
                 }
             }
         }
@@ -128,6 +130,11 @@ async function updateClient(req, res) {
                 if (loc.name && loc.placeId) {
                     const locationId = `loc_${tenantId}_${i}`;
                     await (0, db_1.query)('INSERT INTO locations (id, tenant_id, place_id, name, active) VALUES ($1, $2, $3, $4, TRUE)', [locationId, tenantId, loc.placeId, loc.name]);
+                    // Link location to site
+                    const siteResult = await (0, db_1.query)('SELECT id FROM sites WHERE tenant_id = $1 LIMIT 1', [tenantId]);
+                    if (siteResult.rows.length > 0) {
+                        await (0, db_1.query)('INSERT INTO site_locations (site_id, location_id) VALUES ($1, $2)', [siteResult.rows[0].id, locationId]);
+                    }
                 }
             }
         }

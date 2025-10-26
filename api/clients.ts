@@ -99,6 +99,11 @@ export async function createClient(req: Request, res: Response) {
             'INSERT INTO locations (id, tenant_id, place_id, name, active) VALUES ($1, $2, $3, $4, TRUE)',
             [locationId, tenantId, loc.placeId, loc.name]
           );
+          // Link location to site
+          await query(
+            'INSERT INTO site_locations (site_id, location_id) VALUES ($1, $2)',
+            [siteId, locationId]
+          );
         }
       }
     }
@@ -157,6 +162,17 @@ export async function updateClient(req: Request, res: Response) {
             'INSERT INTO locations (id, tenant_id, place_id, name, active) VALUES ($1, $2, $3, $4, TRUE)',
             [locationId, tenantId, loc.placeId, loc.name]
           );
+          // Link location to site
+          const siteResult = await query(
+            'SELECT id FROM sites WHERE tenant_id = $1 LIMIT 1',
+            [tenantId]
+          );
+          if (siteResult.rows.length > 0) {
+            await query(
+              'INSERT INTO site_locations (site_id, location_id) VALUES ($1, $2)',
+              [siteResult.rows[0].id, locationId]
+            );
+          }
         }
       }
     }
