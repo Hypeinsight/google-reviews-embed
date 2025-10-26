@@ -151,3 +151,78 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - public/admin/dashboard.html
   - public/admin/login.html
   - public/embed-v2.js
+
+---
+
+**2025-10-26T05:43:09.644Z** | Branch: `main` | Commit: `d3c82df`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Update domains to reviews.hypeawareness.com
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
+
+---
+
+**2025-10-26T05:44:38.944Z** | Branch: `main` | Commit: `fbf89d7`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix Render deployment: build TypeScript on install and use start script
+
+**Files changed:**
+  - package.json
+
+---
+
+**2025-10-26T05:46:22.682Z** | Branch: `main` | Commit: `ead9220`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Move TypeScript and type definitions to dependencies for production build
+
+**Files changed:**
+  - package.json
+
+---
+
+**2025-10-26T05:50:07.839Z** | Branch: `main` | Commit: `4da0c1f`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Separate build step from postinstall for Render
+
+**Files changed:**
+  - package.json
+
+---
+
+**2025-10-26T05:56:18.907Z** | Branch: `main` | Commit: `ac1e2b3`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix TypeScript generic constraint in db.ts for pg 8.x
+
+**Files changed:**
+  - api/db.ts
+
+---
+
+**2025-10-26T05:58:48.980Z** | Branch: `main` | Commit: `9bc6c25`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Commit pre-compiled dist folder for Render free tier deployment
+
+**Files changed:**
+  - .gitignore
+  - dist/api/config.js
+  - dist/api/db.js
+  - dist/api/demo-server.js
+  - dist/api/feedback.js
+  - dist/api/index.js
+  - dist/api/log.js
+  - dist/api/mock-db.js
+  - package.json
