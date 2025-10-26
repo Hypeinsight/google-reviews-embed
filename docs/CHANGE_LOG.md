@@ -312,3 +312,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - api/index.ts
   - dist/api/index.js
   - docs/CHANGE_LOG.md
+
+---
+
+**2025-10-26T06:48:49.880Z** | Branch: `main` | Commit: `518b87a`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** CRITICAL FIX: Escape closing script tag in embed code to prevent HTML parsing break
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
