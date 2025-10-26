@@ -1209,7 +1209,7 @@
     function checkSession() {
       const session = localStorage.getItem('adminSession') || sessionStorage.getItem('adminSession');
       if (!session) {
-        window.location.href = '/admin/login.html';
+        window.location.href = '/admin/';
         return null;
       }
       
@@ -1228,7 +1228,7 @@
     function logout() {
       localStorage.removeItem('adminSession');
       sessionStorage.removeItem('adminSession');
-      window.location.href = '/admin/login.html';
+      window.location.href = '/admin/';
     }
 
     // Tab Management

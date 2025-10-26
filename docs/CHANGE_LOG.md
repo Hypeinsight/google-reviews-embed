@@ -603,3 +603,42 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - public/admin/dashboard.html
   - public/embed-enhanced.js
   - public/embed.js
+
+---
+
+**2025-10-26T13:23:40.311Z** | Branch: `main` | Commit: `fe6092c`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix: Display actual feedback count + Track 5-star users non-invasively + Fix sites count
+
+**Files changed:**
+  - api/clients.ts
+  - dist/api/clients.js
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
+  - public/embed-enhanced.js
+  - public/embed.js
+
+---
+
+**2025-10-26T13:35:52.192Z** | Branch: `main` | Commit: `744bc9b`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Enhanced mobile responsiveness and modernized review popup design
+
+**Files changed:**
+  - public/admin/dashboard.html
+  - public/embed-enhanced.js
+
+---
+
+**2025-10-26T13:41:54.867Z** | Branch: `main` | Commit: `4ad10fd`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix dashboard stats to use dynamic data and remove scrollbar
+
+**Files changed:**
+  - public/admin/dashboard.html
