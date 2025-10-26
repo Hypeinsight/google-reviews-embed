@@ -9,6 +9,9 @@ const PORT = 3000;
 // Middleware
 app.use(express.json());
 app.use(cors({ origin: '*' }));
+
+// Serve all static files from public directory
+app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/embed', express.static(path.join(__dirname, '..', 'public')));
 
 // Root endpoint

@@ -94,3 +94,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - public/embed-v2.js
   - public/embed.js
   - public/test.html
+
+---
+
+**2025-10-26T02:21:05.087Z** | Branch: `main` | Commit: `e12ddeb`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add premium admin dashboard with client management, feedback viewing, and embed code generator
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/admin/index.html
