@@ -545,3 +545,17 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 
 **Files changed:**
   - public/admin/dashboard.html
+
+---
+
+**2025-10-26T12:55:40.800Z** | Branch: `main` | Commit: `68d1eeb`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Simplify: Use Google review URL directly instead of extracting/reconstructing Place ID
+
+**Files changed:**
+  - api/config.ts
+  - dist/api/config.js
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html

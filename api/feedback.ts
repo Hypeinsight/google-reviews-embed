@@ -20,6 +20,54 @@ import { query } from './db';
  *   sessionId?: string;
  * }
  */
+/**
+ * GET /api/feedback
+ * 
+ * Get feedback for a specific tenant/client
+ */
+export async function getFeedback(req: Request, res: Response): Promise<void> {
+  try {
+    const { tenantId } = req.query;
+
+    if (!tenantId) {
+      res.status(400).json({
+        success: false,
+        error: 'tenantId is required'
+      });
+      return;
+    }
+
+    const sql = `
+      SELECT 
+        f.id,
+        f.rating,
+        f.message,
+        f.contact_email,
+        f.contact_phone,
+        f.created_at,
+        l.name as location_name
+      FROM feedback f
+      JOIN locations l ON f.location_id = l.id
+      WHERE f.tenant_id = $1
+      ORDER BY f.created_at DESC
+      LIMIT 100
+    `;
+
+    const result = await query(sql, [tenantId]);
+
+    res.status(200).json({
+      success: true,
+      feedback: result.rows
+    });
+  } catch (error) {
+    console.error('Error in getFeedback:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Internal server error'
+    });
+  }
+}
+
 export async function submitFeedback(req: Request, res: Response): Promise<void> {
   try {
     const {

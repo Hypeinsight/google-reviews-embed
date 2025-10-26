@@ -336,6 +336,11 @@
             
             <button type="submit" class="gr-embed-submit">Submit Feedback</button>
           </form>
+          
+          <div style="text-align: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid #e0e0e0;">
+            <p style="color: #666; font-size: 13px; margin-bottom: 12px;">Or share your experience on Google</p>
+            <button onclick="window.GoogleReviewsEmbed.redirectToGoogle()" style="background: transparent; border: 1px solid #ddd; color: #666; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px;">Leave a Google Review</button>
+          </div>
         </div>
 
         <!-- Success View -->

@@ -43,6 +43,7 @@ app.get('/health', async (req, res) => {
 // API routes
 app.get('/api/config', config_1.getConfig);
 app.post('/api/log', log_1.logEvent);
+app.get('/api/feedback', feedback_1.getFeedback);
 app.post('/api/feedback', feedback_1.submitFeedback);
 // Team user management routes
 app.get('/api/team-users', team_users_1.getTeamUsers);

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getFeedback = getFeedback;
 exports.submitFeedback = submitFeedback;
 const db_1 = require("./db");
 /**
@@ -21,6 +22,50 @@ const db_1 = require("./db");
  *   sessionId?: string;
  * }
  */
+/**
+ * GET /api/feedback
+ *
+ * Get feedback for a specific tenant/client
+ */
+async function getFeedback(req, res) {
+    try {
+        const { tenantId } = req.query;
+        if (!tenantId) {
+            res.status(400).json({
+                success: false,
+                error: 'tenantId is required'
+            });
+            return;
+        }
+        const sql = `
+      SELECT 
+        f.id,
+        f.rating,
+        f.message,
+        f.contact_email,
+        f.contact_phone,
+        f.created_at,
+        l.name as location_name
+      FROM feedback f
+      JOIN locations l ON f.location_id = l.id
+      WHERE f.tenant_id = $1
+      ORDER BY f.created_at DESC
+      LIMIT 100
+    `;
+        const result = await (0, db_1.query)(sql, [tenantId]);
+        res.status(200).json({
+            success: true,
+            feedback: result.rows
+        });
+    }
+    catch (error) {
+        console.error('Error in getFeedback:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Internal server error'
+        });
+    }
+}
 async function submitFeedback(req, res) {
     try {
         const { tenantId, siteId, locationId, rating, message, contactEmail, contactPhone, sessionId } = req.body;

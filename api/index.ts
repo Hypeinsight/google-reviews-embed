@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { getConfig } from './config';
 import { logEvent } from './log';
-import { submitFeedback } from './feedback';
+import { getFeedback, submitFeedback } from './feedback';
 import { testConnection } from './db';
 import { getTeamUsers, createTeamUser, updateTeamUser, deleteTeamUser, resetPassword } from './team-users';
 import { getClients, createClient, updateClient, deleteClient } from './clients';
@@ -46,6 +46,7 @@ app.get('/health', async (req: Request, res: Response) => {
 // API routes
 app.get('/api/config', getConfig);
 app.post('/api/log', logEvent);
+app.get('/api/feedback', getFeedback);
 app.post('/api/feedback', submitFeedback);
 
 // Team user management routes
