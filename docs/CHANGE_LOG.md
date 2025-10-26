@@ -367,3 +367,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - dist/api/index.js
   - docs/CHANGE_LOG.md
   - public/admin/dashboard.html
+
+---
+
+**2025-10-26T07:17:08.303Z** | Branch: `main` | Commit: `538f5eb`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add delete button for clients with confirmation dialog
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
