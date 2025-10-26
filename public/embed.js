@@ -130,7 +130,7 @@
         box-shadow: 0 12px 48px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.12);
       }
       .gr-embed-modal {
-        display: none;
+        display: none !important;
         position: fixed;
         top: 0;
         left: 0;
@@ -142,7 +142,7 @@
         justify-content: center;
       }
       .gr-embed-modal.active {
-        display: flex;
+        display: flex !important;
       }
       .gr-embed-modal-content {
         background: white;
