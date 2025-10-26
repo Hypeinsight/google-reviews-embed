@@ -271,3 +271,16 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - api/index.ts
   - dist/api/index.js
   - docs/CHANGE_LOG.md
+
+---
+
+**2025-10-26T06:34:50.879Z** | Branch: `main` | Commit: `e43907c`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix static file path resolution for production deployment
+
+**Files changed:**
+  - api/index.ts
+  - dist/api/index.js
+  - docs/CHANGE_LOG.md
