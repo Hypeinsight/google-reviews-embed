@@ -67,19 +67,9 @@ app.put('/api/team-users/:id', updateTeamUser);
 app.delete('/api/team-users/:id', deleteTeamUser);
 app.post('/api/team-users/:id/reset-password', resetPassword);
 
-// Root endpoint
+// Root endpoint - redirect to admin
 app.get('/', (req: Request, res: Response) => {
-  res.json({
-    service: 'Google Reviews Embed System',
-    version: '1.0.0',
-    endpoints: {
-      health: '/health',
-      config: 'GET /api/config',
-      log: 'POST /api/log',
-      feedback: 'POST /api/feedback',
-      embed: '/embed/embed.js'
-    }
-  });
+  res.redirect('/admin/');
 });
 
 // 404 handler

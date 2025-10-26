@@ -284,3 +284,18 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - api/index.ts
   - dist/api/index.js
   - docs/CHANGE_LOG.md
+
+---
+
+**2025-10-26T06:41:17.461Z** | Branch: `main` | Commit: `1220e03`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix: Make login default at /admin/, fix syntax error in dashboard
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
+  - public/admin/index.html
+  - public/admin/login.html
+  - public/admin/old-index.html
