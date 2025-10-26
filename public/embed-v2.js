@@ -3,10 +3,14 @@
  * Version 2.0.0
  * 
  * Smart sentiment-based routing with premium UI
+ * Performance Optimized: Async loading, lazy initialization, minimal DOM manipulation
  */
 
 (function() {
   'use strict';
+  
+  // Early exit if already loaded
+  if (window.GREmbed) return;
 
   let config = null;
   let embedData = null;
@@ -21,12 +25,15 @@
     const scripts = document.getElementsByTagName('script');
     for (let i = 0; i < scripts.length; i++) {
       if (scripts[i].src && (scripts[i].src.includes('embed.js') || scripts[i].src.includes('embed-v2.js'))) {
-        return {
-          tenantId: scripts[i].getAttribute('data-tenant-id'),
-          siteId: scripts[i].getAttribute('data-site-id'),
-          locationId: scripts[i].getAttribute('data-location-id'),
-          apiUrl: scripts[i].getAttribute('data-api-url') || 'http://localhost:3000'
-        };
+      return {
+        tenantId: scripts[i].getAttribute('data-tenant-id'),
+        siteId: scripts[i].getAttribute('data-site-id'),
+        locationId: scripts[i].getAttribute('data-location-id'),
+        apiUrl: scripts[i].getAttribute('data-api-url') || 'http://localhost:3000',
+        buttonText: scripts[i].getAttribute('data-button-text'),
+        buttonColor: scripts[i].getAttribute('data-button-color'),
+        whiteLabel: scripts[i].getAttribute('data-white-label') === 'true'
+      };
       }
     }
     return null;
@@ -49,8 +56,9 @@
     }
   }
 
-  async function logEvent(eventType, eventData = {}) {
-    await apiCall('/api/log', 'POST', {
+  function logEvent(eventType, eventData = {}) {
+    // Non-blocking async event logging using sendBeacon for better performance
+    const data = JSON.stringify({
       tenantId: embedData.tenantId,
       siteId: embedData.siteId,
       locationId: embedData.locationId,
@@ -58,6 +66,18 @@
       eventData,
       sessionId
     });
+    
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(`${embedData.apiUrl}/api/log`, data);
+    } else {
+      // Fallback for older browsers
+      fetch(`${embedData.apiUrl}/api/log`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: data,
+        keepalive: true
+      }).catch(() => {});
+    }
   }
 
   function adjustColor(hex, percent) {
@@ -72,10 +92,17 @@
   }
 
   function injectStyles() {
-    const primaryColor = config.branding?.primaryColor || '#4285F4';
+    const primaryColor = embedData.buttonColor || config.branding?.primaryColor || '#4285F4';
     const style = document.createElement('style');
+    // Async font loading for better performance
+    const fontLink = document.createElement('link');
+    fontLink.rel = 'stylesheet';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
+    fontLink.media = 'print';
+    fontLink.onload = function() { this.media = 'all'; };
+    document.head.appendChild(fontLink);
+    
     style.textContent = `
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
       
       * { box-sizing: border-box; }
       
@@ -374,6 +401,29 @@
       .gr-divider::after {
         margin-left: 12px;
       }
+      
+      .gr-powered-by {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(0,0,0,0.08);
+        text-align: center;
+      }
+      .gr-powered-by p {
+        font-size: 13px;
+        color: #999;
+        margin: 0;
+        line-height: 1.6;
+      }
+      .gr-powered-by a {
+        color: ${primaryColor};
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.2s ease;
+      }
+      .gr-powered-by a:hover {
+        color: ${adjustColor(primaryColor, -20)};
+        text-decoration: underline;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -381,7 +431,7 @@
   function createButton() {
     const button = document.createElement('button');
     button.className = 'gr-embed-button';
-    button.textContent = config.branding?.buttonText || 'Share Your Feedback';
+    button.textContent = embedData.buttonText || config.branding?.buttonText || 'Share Your Feedback';
     button.onclick = openModal;
     document.body.appendChild(button);
 
@@ -466,10 +516,20 @@
             <p class="gr-success-text">We've received your feedback and really appreciate you taking the time to help us improve.</p>
           </div>
         </div>
+        
+        <!-- Hype Insight Footer -->
+        <div class="gr-powered-by" id="gr-powered-by" style="display: none;">
+          <p>Looking for review management or digital marketing help? <a href="https://hypeinsight.com?utm_source=review_widget&utm_medium=referral&utm_campaign=hype_insight_review_management" target="_blank" rel="noopener">Visit Hype Insight</a></p>
+        </div>
       </div>
     `;
 
     document.body.appendChild(modal);
+
+    // Show/hide powered by footer based on white-label setting
+    if (!embedData.whiteLabel) {
+      document.getElementById('gr-powered-by').style.display = 'block';
+    }
 
     setupRatingStars();
     setupFeedbackForm();
