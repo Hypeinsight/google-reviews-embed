@@ -283,10 +283,10 @@
     button.onclick = openModal;
     document.body.appendChild(button);
 
-    // Position button (bottom right by default)
+    // Position button (bottom left by default)
     button.style.position = 'fixed';
     button.style.bottom = '24px';
-    button.style.right = '24px';
+    button.style.left = '24px';
     button.style.zIndex = '9999';
 
     logEvent('widget_loaded');
