@@ -299,3 +299,16 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - public/admin/index.html
   - public/admin/login.html
   - public/admin/old-index.html
+
+---
+
+**2025-10-26T06:43:10.974Z** | Branch: `main` | Commit: `2e0e5e9`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Redirect root URL to admin login for security
+
+**Files changed:**
+  - api/index.ts
+  - dist/api/index.js
+  - docs/CHANGE_LOG.md

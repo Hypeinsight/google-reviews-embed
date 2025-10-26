@@ -933,7 +933,7 @@
           var scriptDomain = 'https://reviews.hypeawareness.com'; // Production domain
           var apiDomain = 'https://reviews.hypeawareness.com'; // API endpoint
           
-          var embedCode = '<script src="' + scriptDomain + '/embed/embed-v2.js" async data-tenant-id="' + tenantId + '" data-site-id="' + siteId + '" data-location-id="' + locId + '" data-button-text="' + (site.buttonText || 'Leave a Review') + '" data-button-color="' + (site.buttonColor || '#46B646') + '" data-white-label="' + (site.whiteLabel ? 'true' : 'false') + '" data-api-url="' + apiDomain + '"></script>';
+          var embedCode = '<script src="' + scriptDomain + '/embed/embed-v2.js" async data-tenant-id="' + tenantId + '" data-site-id="' + siteId + '" data-location-id="' + locId + '" data-button-text="' + (site.buttonText || 'Leave a Review') + '" data-button-color="' + (site.buttonColor || '#46B646') + '" data-white-label="' + (site.whiteLabel ? 'true' : 'false') + '" data-api-url="' + apiDomain + '"><\/script>';
           
           embedHtml += '<div style="margin-bottom: 24px;" data-embed-code="' + embedCode.replace(/"/g, '&quot;') + '">' +
             '<h4 style="margin-bottom: 8px;">' + loc.name + '</h4>' +
