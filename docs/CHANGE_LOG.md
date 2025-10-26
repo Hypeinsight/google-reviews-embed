@@ -404,3 +404,16 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - api/index.ts
   - dist/api/index.js
   - docs/CHANGE_LOG.md
+
+---
+
+**2025-10-26T08:48:35.980Z** | Branch: `main` | Commit: `5a782b0`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix: Add site_locations join table entries when creating/updating clients
+
+**Files changed:**
+  - api/clients.ts
+  - dist/api/clients.js
+  - docs/CHANGE_LOG.md
