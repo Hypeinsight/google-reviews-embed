@@ -655,3 +655,14 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - docs/CHANGE_LOG.md
   - public/admin/dashboard.html
   - public/embed-enhanced.js
+
+---
+
+**2025-10-26T13:49:23.715Z** | Branch: `main` | Commit: `f94b17e`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Update changelog
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
