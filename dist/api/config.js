@@ -73,8 +73,8 @@ async function getConfig(req, res) {
             ...row.site_settings,
             ...row.location_settings
         };
-        // Map buttonColor to primaryColor if it exists
-        if (mergedSettings.buttonColor && !mergedSettings.primaryColor) {
+        // Map buttonColor to primaryColor if it exists (buttonColor takes precedence)
+        if (mergedSettings.buttonColor) {
             mergedSettings.primaryColor = mergedSettings.buttonColor;
         }
         // Build Google Reviews URL

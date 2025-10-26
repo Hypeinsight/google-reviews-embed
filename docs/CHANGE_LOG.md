@@ -441,3 +441,50 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/embed.js
+
+---
+
+**2025-10-26T09:03:36.219Z** | Branch: `main` | Commit: `2491456`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix: Map buttonColor to primaryColor in config API
+
+**Files changed:**
+  - api/config.ts
+  - dist/api/config.js
+  - docs/CHANGE_LOG.md
+
+---
+
+**2025-10-26T09:05:46.468Z** | Branch: `main` | Commit: `a172b8a`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix: Add !important to modal display to override WordPress inline styles
+
+**Files changed:**
+  - public/embed.js
+
+---
+
+**2025-10-26T09:07:43.562Z** | Branch: `main` | Commit: `01d9076`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Change button default position from bottom-right to bottom-left
+
+**Files changed:**
+  - public/embed.js
+
+---
+
+**2025-10-26T09:10:01.984Z** | Branch: `main` | Commit: `ae905dc`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Implement enhanced tiered feedback flow: star rating first, then conditional redirect to Google (4-5 stars) or private feedback form (1-3 stars)
+
+**Files changed:**
+  - public/embed-enhanced.js
+  - public/embed.js
