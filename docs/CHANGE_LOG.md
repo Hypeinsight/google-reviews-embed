@@ -324,3 +324,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/admin/dashboard.html
+
+---
+
+**2025-10-26T06:54:22.287Z** | Branch: `main` | Commit: `c6a3947`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Remove Team Users tab - use single admin account only
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
