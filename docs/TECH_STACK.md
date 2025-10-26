@@ -20,6 +20,7 @@
 | dotenv | ^17.2.3 |
 | express | ^4.18.2 |
 | pg | ^8.16.3 |
+| qrcode | ^1.5.4 |
 | tsx | ^4.7.0 |
 | typescript | ^5.3.3 |
 
@@ -54,3 +55,4 @@
 
 <!-- Dependency change notes will be appended here -->
 - **2025-10-26**: Added: body-parser, cors, dotenv, pg, @types/cors, @types/pg
+- **2025-10-26**: Added: qrcode

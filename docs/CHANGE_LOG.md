@@ -106,3 +106,17 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/admin/index.html
+
+---
+
+**2025-10-26T02:45:24.077Z** | Branch: `main` | Commit: `178d8ab`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add improved admin dashboard with working filters, QR code generator, and feedback grouping by client
+
+**Files changed:**
+  - api/demo-server.ts
+  - docs/CHANGE_LOG.md
+  - package.json
+  - public/admin/dashboard.html
