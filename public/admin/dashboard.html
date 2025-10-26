@@ -1104,15 +1104,25 @@
       document.getElementById('tab-' + tabName).style.display = 'block';
       
       if (tabName === 'users') {
-        renderUsers();
+        loadUsers();
       }
     }
 
     // User Management
-    let teamUsers = [
-      { id: 1, name: 'Admin User', email: 'admin@hypeinsight.com', role: 'admin', status: 'active' },
-      { id: 2, name: 'Team Member', email: 'team@hypeinsight.com', role: 'user', status: 'active' }
-    ];
+    let teamUsers = [];
+
+    async function loadUsers() {
+      try {
+        const response = await fetch('/api/team-users');
+        const data = await response.json();
+        if (data.success) {
+          teamUsers = data.users;
+          renderUsers();
+        }
+      } catch (error) {
+        console.error('Failed to load users:', error);
+      }
+    }
 
     function renderUsers() {
       const grid = document.getElementById('usersGrid');
@@ -1126,10 +1136,11 @@
             '<div class="client-name">' + user.name + '</div>' +
             '<span class="client-id">' + user.email + '</span>' +
           '</div>' +
-          '<span class="badge ' + (user.status === 'active' ? 'badge-success' : '') + '">' + user.role.toUpperCase() + '</span>' +
+          '<span class="badge ' + (user.active ? 'badge-success' : '') + '">' + user.role.toUpperCase().replace('_', ' ') + '</span>' +
         '</div>' +
         '<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; gap: 8px;">' +
           '<button class="btn btn-secondary" onclick="editUser(' + user.id + ')" style="flex: 1; padding: 8px;">Edit</button>' +
+          '<button class="btn btn-secondary" onclick="resetUserPassword(' + user.id + ')" style="flex: 1; padding: 8px; background: rgba(52, 152, 219, 0.2);">Reset PW</button>' +
           '<button class="btn btn-secondary" onclick="deleteUser(' + user.id + ')" style="flex: 1; padding: 8px; background: rgba(231, 76, 60, 0.2); color: #ff6b6b;">Delete</button>' +
         '</div>';
         grid.appendChild(card);
@@ -1137,17 +1148,114 @@
     }
 
     function openAddUserModal() {
-      alert('Add user functionality - Coming soon! This will open a modal to add team members with email/password.');
+      const name = prompt('Enter user name:');
+      if (!name) return;
+      
+      const email = prompt('Enter user email:');
+      if (!email) return;
+      
+      const password = prompt('Enter temporary password:');
+      if (!password) return;
+      
+      const role = prompt('Enter role (admin or team_member):', 'team_member');
+      
+      createUser({ name, email, password, role });
+    }
+
+    async function createUser(userData) {
+      try {
+        const response = await fetch('/api/team-users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userData)
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+          alert('User created successfully!');
+          loadUsers();
+        } else {
+          alert('Error: ' + data.error);
+        }
+      } catch (error) {
+        alert('Failed to create user: ' + error.message);
+      }
     }
 
     function editUser(id) {
-      alert('Edit user ' + id + ' - Coming soon!');
+      const user = teamUsers.find(u => u.id == id);
+      if (!user) return;
+      
+      const name = prompt('Enter user name:', user.name);
+      if (!name) return;
+      
+      const email = prompt('Enter user email:', user.email);
+      if (!email) return;
+      
+      const role = prompt('Enter role (admin or team_member):', user.role);
+      
+      updateUser(id, { name, email, role });
     }
 
-    function deleteUser(id) {
-      if (confirm('Are you sure you want to remove this team member?')) {
-        teamUsers = teamUsers.filter(u => u.id !== id);
-        renderUsers();
+    async function updateUser(id, userData) {
+      try {
+        const response = await fetch('/api/team-users/' + id, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userData)
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+          alert('User updated successfully!');
+          loadUsers();
+        } else {
+          alert('Error: ' + data.error);
+        }
+      } catch (error) {
+        alert('Failed to update user: ' + error.message);
+      }
+    }
+
+    async function deleteUser(id) {
+      if (!confirm('Are you sure you want to remove this team member?')) return;
+      
+      try {
+        const response = await fetch('/api/team-users/' + id, {
+          method: 'DELETE'
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+          alert('User deleted successfully!');
+          loadUsers();
+        } else {
+          alert('Error: ' + data.error);
+        }
+      } catch (error) {
+        alert('Failed to delete user: ' + error.message);
+      }
+    }
+
+    async function resetUserPassword(id) {
+      const password = prompt('Enter new password for this user:');
+      if (!password) return;
+      
+      try {
+        const response = await fetch('/api/team-users/' + id + '/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+          alert('Password reset successfully!');
+        } else {
+          alert('Error: ' + data.error);
+        }
+      } catch (error) {
+        alert('Failed to reset password: ' + error.message);
       }
     }
 

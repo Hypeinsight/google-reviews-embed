@@ -6,6 +6,7 @@ import { getConfig } from './config';
 import { logEvent } from './log';
 import { submitFeedback } from './feedback';
 import { testConnection } from './db';
+import { getTeamUsers, createTeamUser, updateTeamUser, deleteTeamUser, resetPassword } from './team-users';
 
 // Load environment variables
 dotenv.config();
@@ -55,6 +56,13 @@ app.get('/health', async (req: Request, res: Response) => {
 app.get('/api/config', getConfig);
 app.post('/api/log', logEvent);
 app.post('/api/feedback', submitFeedback);
+
+// Team user management routes
+app.get('/api/team-users', getTeamUsers);
+app.post('/api/team-users', createTeamUser);
+app.put('/api/team-users/:id', updateTeamUser);
+app.delete('/api/team-users/:id', deleteTeamUser);
+app.post('/api/team-users/:id/reset-password', resetPassword);
 
 // Root endpoint
 app.get('/', (req: Request, res: Response) => {

@@ -11,6 +11,7 @@ const config_1 = require("./config");
 const log_1 = require("./log");
 const feedback_1 = require("./feedback");
 const db_1 = require("./db");
+const team_users_1 = require("./team-users");
 // Load environment variables
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -51,6 +52,12 @@ app.get('/health', async (req, res) => {
 app.get('/api/config', config_1.getConfig);
 app.post('/api/log', log_1.logEvent);
 app.post('/api/feedback', feedback_1.submitFeedback);
+// Team user management routes
+app.get('/api/team-users', team_users_1.getTeamUsers);
+app.post('/api/team-users', team_users_1.createTeamUser);
+app.put('/api/team-users/:id', team_users_1.updateTeamUser);
+app.delete('/api/team-users/:id', team_users_1.deleteTeamUser);
+app.post('/api/team-users/:id/reset-password', team_users_1.resetPassword);
 // Root endpoint
 app.get('/', (req, res) => {
     res.json({
