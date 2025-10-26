@@ -367,8 +367,6 @@
       gap: 16px;
       margin-bottom: 24px;
       border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
     }
 
     @media (max-width: 768px) {
@@ -566,19 +564,19 @@
     <div class="stats">
       <div class="stat-card">
         <div class="stat-label">Total Clients</div>
-        <div class="stat-value">3</div>
+        <div class="stat-value" id="totalClients">0</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Total Reviews</div>
-        <div class="stat-value">47</div>
+        <div class="stat-label">Total Feedback</div>
+        <div class="stat-value" id="totalFeedback">0</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Active Locations</div>
-        <div class="stat-value">5</div>
+        <div class="stat-value" id="totalLocations">0</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">This Month</div>
-        <div class="stat-value">+12</div>
+        <div class="stat-label">Total Sites</div>
+        <div class="stat-value" id="totalSites">0</div>
       </div>
     </div>
 
@@ -780,11 +778,21 @@
       const grid = document.getElementById('clientsGrid');
       grid.innerHTML = '';
 
+      // Calculate dashboard stats
+      let totalLocations = 0;
+      let totalSites = 0;
+      let totalFeedback = 0;
+
       clientsData.forEach(client => {
         const tenantId = client.tenant_id;
         const sites = client.sites || [];
         const locationCount = sites.reduce((sum, site) => 
           (site.locations || []).length + sum, 0);
+        
+        // Accumulate totals
+        totalSites += sites.length;
+        totalLocations += locationCount;
+        totalFeedback += (client.feedbackCount || 0);
         
         const card = document.createElement('div');
         card.className = 'client-card';
@@ -813,6 +821,12 @@
           '</div>';
         grid.appendChild(card);
       });
+
+      // Update dashboard stats
+      document.getElementById('totalClients').textContent = clientsData.length;
+      document.getElementById('totalSites').textContent = totalSites;
+      document.getElementById('totalLocations').textContent = totalLocations;
+      document.getElementById('totalFeedback').textContent = totalFeedback;
     }
 
     function openAddClientModal() {
