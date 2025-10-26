@@ -351,3 +351,19 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - public/admin/index.html
   - scripts/change_admin_password.js
   - scripts/run_migration.js
+
+---
+
+**2025-10-26T07:15:06.381Z** | Branch: `main` | Commit: `d82a353`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Implement real database storage for client management - clients now persist to PostgreSQL
+
+**Files changed:**
+  - api/clients.ts
+  - api/index.ts
+  - dist/api/clients.js
+  - dist/api/index.js
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
