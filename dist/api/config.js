@@ -77,8 +77,8 @@ async function getConfig(req, res) {
         if (mergedSettings.buttonColor) {
             mergedSettings.primaryColor = mergedSettings.buttonColor;
         }
-        // Build Google Reviews URL
-        const googleReviewUrl = `https://search.google.com/local/writereview?placeid=${row.place_id}`;
+        // Use the place_id field as the review URL (it stores the full URL)
+        const googleReviewUrl = row.place_id;
         res.status(200).json({
             success: true,
             config: {

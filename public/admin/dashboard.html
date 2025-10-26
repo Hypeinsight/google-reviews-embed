@@ -805,8 +805,8 @@
         const name = input.querySelector('.location-name').value;
         const link = input.querySelector('.location-link').value;
         if (name && link) {
-          const placeId = extractPlaceId(link) || link;
-          locations.push({ name, placeId });
+          // Use the review URL directly as the "placeId" (stored in place_id field)
+          locations.push({ name, placeId: link });
         }
       });
 
@@ -1012,7 +1012,7 @@
         div.className = 'location-input';
         div.style.cssText = 'display: flex; gap: 8px; margin-bottom: 8px;';
         div.innerHTML = '<input type="text" placeholder="Location name" value="' + loc.name + '" style="flex: 1;" class="location-name">' +
-          '<input type="text" placeholder="Google review link" value="https://search.google.com/local/writereview?placeid=' + loc.place_id + '" style="flex: 2;" class="location-link">' +
+          '<input type="text" placeholder="Google review link" value="' + loc.place_id + '" style="flex: 2;" class="location-link">' +
           '<button type="button" onclick="removeLocation(this)" class="btn btn-secondary" style="padding: 8px 16px;">✕</button>';
         locationsContainer.appendChild(div);
       });

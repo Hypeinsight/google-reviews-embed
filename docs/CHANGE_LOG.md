@@ -488,3 +488,60 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - public/embed-enhanced.js
   - public/embed.js
+
+---
+
+**2025-10-26T09:14:41.000Z** | Branch: `main` | Commit: `eb50513`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix: buttonColor now correctly overrides default primaryColor
+
+**Files changed:**
+  - api/config.ts
+  - dist/api/config.js
+  - docs/CHANGE_LOG.md
+
+---
+
+**2025-10-26T12:17:38.908Z** | Branch: `main` | Commit: `223521e`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix: Edit button now properly populates form with correct API response property names
+
+**Files changed:**
+  - public/admin/dashboard.html
+
+---
+
+**2025-10-26T12:23:11.063Z** | Branch: `main` | Commit: `2fabf97`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix: Support updating clients - form now uses PUT for edits and POST for new clients
+
+**Files changed:**
+  - public/admin/dashboard.html
+
+---
+
+**2025-10-26T12:43:27.303Z** | Branch: `main` | Commit: `db0d651`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix: Preserve currentClientTenantId when opening edit modal so updates work correctly
+
+**Files changed:**
+  - public/admin/dashboard.html
+
+---
+
+**2025-10-26T12:48:03.220Z** | Branch: `main` | Commit: `e71dacb`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix: extractPlaceId now accepts all valid Place ID formats (ChIJ, C*, E*), not just ChIJ
+
+**Files changed:**
+  - public/admin/dashboard.html
