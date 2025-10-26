@@ -20,23 +20,11 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-// CORS configuration
-const corsOptions = {
-    origin: (origin, callback) => {
-        const allowedOrigins = process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000'];
-        // Allow requests with no origin (e.g., mobile apps, Postman)
-        if (!origin)
-            return callback(null, true);
-        if (allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        }
-        else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+// CORS configuration - allow same-origin requests
+app.use((0, cors_1.default)({
+    origin: true,
     credentials: true
-};
-app.use((0, cors_1.default)(corsOptions));
+}));
 // Serve static files (path is relative to dist/api when compiled)
 const publicPath = path_1.default.join(__dirname, '..', '..', 'public');
 app.use('/embed', express_1.default.static(publicPath));
