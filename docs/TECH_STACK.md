@@ -11,9 +11,15 @@
 <!-- AUTO-GENERATED: Do not edit this section manually -->
 | Package | Version |
 |---------|---------|
+| @types/cors | ^2.8.19 |
 | @types/express | ^4.17.21 |
 | @types/node | ^20.10.0 |
+| @types/pg | ^8.15.5 |
+| body-parser | ^2.2.0 |
+| cors | ^2.8.5 |
+| dotenv | ^17.2.3 |
 | express | ^4.18.2 |
+| pg | ^8.16.3 |
 | tsx | ^4.7.0 |
 | typescript | ^5.3.3 |
 
@@ -47,3 +53,4 @@
 ## Changes
 
 <!-- Dependency change notes will be appended here -->
+- **2025-10-26**: Added: body-parser, cors, dotenv, pg, @types/cors, @types/pg

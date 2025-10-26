@@ -4,6 +4,7 @@
   "description": "Scalable JavaScript Google Reviews embed system with multi-tenant support",
   "main": "dist/index.js",
   "scripts": {
+    "demo": "tsx watch api/demo-server.ts",
     "dev": "tsx watch api/index.ts",
     "build": "tsc",
     "start": "node dist/api/index.js",
