@@ -642,3 +642,16 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 
 **Files changed:**
   - public/admin/dashboard.html
+
+---
+
+**2025-10-26T13:44:57.915Z** | Branch: `main` | Commit: `3adc239`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add Powered by footer to popup and fix logout redirect
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
+  - public/embed-enhanced.js
