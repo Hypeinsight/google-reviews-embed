@@ -417,3 +417,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - api/clients.ts
   - dist/api/clients.js
   - docs/CHANGE_LOG.md
+
+---
+
+**2025-10-26T08:53:04.010Z** | Branch: `main` | Commit: `1167e2b`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix: Update admin dashboard to generate correct embed script path (embed.js not embed-v2.js)
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
