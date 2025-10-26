@@ -1017,8 +1017,8 @@
     
     updateButtonPreview();
     
-    // Close detail modal and open edit modal
-    closeClientDetail();
+    // Close detail modal and open edit modal (keep tenant ID for editing)
+    document.getElementById('clientDetailModal').classList.remove('active');
     document.getElementById('clientModal').classList.add('active');
   }
 
