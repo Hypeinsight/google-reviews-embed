@@ -30,7 +30,8 @@
           tenantId: scripts[i].getAttribute('data-tenant-id'),
           siteId: scripts[i].getAttribute('data-site-id'),
           locationId: scripts[i].getAttribute('data-location-id'),
-          apiUrl: scripts[i].getAttribute('data-api-url') || 'http://localhost:3000'
+          apiUrl: scripts[i].getAttribute('data-api-url') || 'http://localhost:3000',
+          whiteLabel: scripts[i].getAttribute('data-white-label') === 'true'
         };
       }
     }
@@ -253,6 +254,23 @@
         font-size: 48px;
         margin-bottom: 16px;
       }
+      .gr-embed-footer {
+        text-align: center;
+        padding: 16px 0 0;
+        margin-top: 24px;
+        border-top: 1px solid #e5e7eb;
+        font-size: 12px;
+        color: #9ca3af;
+      }
+      .gr-embed-footer a {
+        color: #6b7280;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s;
+      }
+      .gr-embed-footer a:hover {
+        color: #374151;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -363,6 +381,8 @@
             <p class="gr-embed-subtitle">Your feedback has been received and we'll address it promptly.</p>
           </div>
         </div>
+        
+        ${!embedData.whiteLabel ? '<div class="gr-embed-footer">Powered by <a href="https://hypeawareness.com" target="_blank" rel="noopener">Hype Insight</a></div>' : ''}
       </div>
     `;
 
