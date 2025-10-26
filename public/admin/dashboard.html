@@ -930,9 +930,8 @@
       let embedHtml = '';
       Object.entries(client.sites).forEach(([siteId, site]) => {
         Object.entries(site.locations).forEach(([locId, loc]) => {
-          // TODO: Replace these domains with your actual production domains
-          var scriptDomain = 'https://reviews.hypeinsight.com'; // Where you host the embed script
-          var apiDomain = 'https://api.hypeinsight.com'; // Your API endpoint
+          var scriptDomain = 'https://reviews.hypeawareness.com'; // Production domain
+          var apiDomain = 'https://reviews.hypeawareness.com'; // API endpoint
           
           var embedCode = '<script src="' + scriptDomain + '/embed/embed-v2.js" async data-tenant-id="' + tenantId + '" data-site-id="' + siteId + '" data-location-id="' + locId + '" data-button-text="' + (site.buttonText || 'Leave a Review') + '" data-button-color="' + (site.buttonColor || '#46B646') + '" data-white-label="' + (site.whiteLabel ? 'true' : 'false') + '" data-api-url="' + apiDomain + '"></script>';
           
@@ -951,7 +950,7 @@
       Object.entries(client.sites).forEach(([siteId, site]) => {
         Object.entries(site.locations).forEach(([locId, loc]) => {
           // QR code points to YOUR feedback form, not directly to Google
-          var feedbackUrl = 'https://reviews.hypeinsight.com/review?tenant=' + tenantId + '&site=' + siteId + '&location=' + locId;
+          var feedbackUrl = 'https://reviews.hypeawareness.com/review?tenant=' + tenantId + '&site=' + siteId + '&location=' + locId;
           var qrCard = document.createElement('div');
           qrCard.className = 'qr-card';
           qrCard.innerHTML = '<h4>' + loc.name + '</h4>' +
