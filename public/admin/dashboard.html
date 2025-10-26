@@ -767,7 +767,7 @@
       // Extract Place ID from Google review links
       // Formats: https://g.page/r/PLACE_ID, https://search.google.com/local/writereview?placeid=PLACE_ID, etc.
       const patterns = [
-        /g\.page\/r\/([a-zA-Z0-9_-]+)/,           // g.page short links
+        /g\.page\/r\/([a-zA-Z0-9_-]+)/,           // g.page short links  
         /placeid=([a-zA-Z0-9_-]+)/,               // direct placeid parameter
         /place\/[^/]+\/([a-zA-Z0-9_-]+)/,         // maps with place name
         /!1s([a-zA-Z0-9_-]+)!/,                    // embedded in maps URL
@@ -775,13 +775,16 @@
       
       for (let pattern of patterns) {
         const match = link.match(pattern);
-        if (match && match[1] && match[1].startsWith('ChIJ')) {
-          return match[1];
+        if (match && match[1]) {
+          // Valid Place IDs start with C, E, or Ch and contain alphanumeric/underscores
+          if (match[1].match(/^(ChIJ|C[A-Za-z0-9_-]{10,}|E[A-Za-z0-9_-]{10,})/)) {
+            return match[1];
+          }
         }
       }
       
-      // If it looks like a Place ID already, return it
-      if (link.match(/^ChIJ[a-zA-Z0-9_-]+$/)) return link;
+      // If it looks like a Place ID already (starts with C or E, 15+ chars), return it
+      if (link.match(/^(ChIJ|C|E)[A-Za-z0-9_-]{10,}$/)) return link;
       
       return null;
     }
