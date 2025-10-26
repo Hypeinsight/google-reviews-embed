@@ -1,4 +1,4 @@
-import { Pool, PoolClient, QueryResult } from 'pg';
+import { Pool, PoolClient, QueryResult, QueryResultRow } from 'pg';
 
 /**
  * Database connection pool for PostgreSQL
@@ -34,7 +34,7 @@ export function getPool(): Pool {
 /**
  * Execute a query with parameters
  */
-export async function query<T = any>(
+export async function query<T extends QueryResultRow = any>(
   text: string,
   params?: any[]
 ): Promise<QueryResult<T>> {
