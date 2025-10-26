@@ -429,3 +429,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/admin/dashboard.html
+
+---
+
+**2025-10-26T08:58:58.793Z** | Branch: `main` | Commit: `3547bb8`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix: Add missing adjustColor function that was breaking button creation
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/embed.js

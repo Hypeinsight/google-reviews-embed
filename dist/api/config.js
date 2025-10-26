@@ -73,6 +73,10 @@ async function getConfig(req, res) {
             ...row.site_settings,
             ...row.location_settings
         };
+        // Map buttonColor to primaryColor if it exists
+        if (mergedSettings.buttonColor && !mergedSettings.primaryColor) {
+            mergedSettings.primaryColor = mergedSettings.buttonColor;
+        }
         // Build Google Reviews URL
         const googleReviewUrl = `https://search.google.com/local/writereview?placeid=${row.place_id}`;
         res.status(200).json({
