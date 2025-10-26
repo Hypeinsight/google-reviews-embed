@@ -9,7 +9,6 @@
     "build": "tsc",
     "start": "node dist/api/index.js",
     "seed": "node scripts/seed_database.js",
-    "postinstall": "node scripts/update_tech_stack.js",
     "init:hooks": "git config core.hooksPath .githooks && echo Git hooks configured successfully"
   },
   "keywords": [
