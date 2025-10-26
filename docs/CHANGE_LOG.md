@@ -240,3 +240,21 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - db/admin_schema.sql
   - dist/api/db.js
   - docs/CHANGE_LOG.md
+
+---
+
+**2025-10-26T06:28:16.695Z** | Branch: `main` | Commit: `0f27e7a`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add full team user management: create, edit, delete, reset password
+
+**Files changed:**
+  - api/index.ts
+  - api/team-users.ts
+  - db/init_production.sql
+  - dist/api/index.js
+  - dist/api/team-users.js
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
+  - scripts/init_database.js

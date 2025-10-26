@@ -36,8 +36,10 @@ const corsOptions = {
     credentials: true
 };
 app.use((0, cors_1.default)(corsOptions));
-// Serve static files (embed.js)
+// Serve static files
 app.use('/embed', express_1.default.static(path_1.default.join(__dirname, '..', 'public')));
+app.use('/admin', express_1.default.static(path_1.default.join(__dirname, '..', 'public', 'admin')));
+app.use(express_1.default.static(path_1.default.join(__dirname, '..', 'public')));
 // Health check endpoint
 app.get('/health', async (req, res) => {
     const dbHealthy = await (0, db_1.testConnection)();
