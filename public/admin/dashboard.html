@@ -902,30 +902,35 @@
       // Render QR codes
       const qrContainer = document.getElementById('qrCodes');
       qrContainer.innerHTML = '';
-      Object.entries(client.sites).forEach(([siteId, site]) => {
-        Object.entries(site.locations).forEach(([locId, loc]) => {
-          // QR code points to YOUR feedback form, not directly to Google
-          var feedbackUrl = 'https://reviews.hypeawareness.com/review?tenant=' + tenantId + '&site=' + siteId + '&location=' + locId;
-          var qrCard = document.createElement('div');
-          qrCard.className = 'qr-card';
-          qrCard.innerHTML = '<h4>' + loc.name + '</h4>' +
-            '<div id="qr-' + locId + '" style="margin: 16px 0;"></div>' +
-            '<button class="btn btn-secondary" onclick="downloadQR(\'' + locId + '\', \'' + client.name + '-' + loc.name + '\')">Download</button>' +
-            '<p style="font-size: 12px; color: #666; margin-top: 8px;">Goes to feedback form first</p>';
-          qrContainer.appendChild(qrCard);
-          
-          setTimeout(() => {
-            new QRCode(document.getElementById(`qr-${locId}`), {
-              text: feedbackUrl,
-              width: 150,
-              height: 150,
-              colorDark: "#000000",
-              colorLight: "#ffffff",
-              correctLevel: QRCode.CorrectLevel.H
+      if (client.sites && client.sites.length > 0) {
+        client.sites.forEach(site => {
+          if (site.locations && site.locations.length > 0) {
+            site.locations.forEach(loc => {
+              // QR code points to the client's website with auto-open parameter
+              let siteUrl = site.domain.startsWith('http') ? site.domain : 'https://' + site.domain;
+              siteUrl = siteUrl + (siteUrl.includes('?') ? '&' : '?') + 'openReview=1';
+              var qrCard = document.createElement('div');
+              qrCard.className = 'qr-card';
+              qrCard.innerHTML = '<h4>' + loc.name + '</h4>' +
+                '<div id="qr-' + loc.location_id + '" style="margin: 16px 0;"></div>' +
+                '<button class="btn btn-secondary" onclick="downloadQR(\'' + loc.location_id + '\', \'' + client.client_name + '-' + loc.name + '\')">Download</button>' +
+                '<p style="font-size: 12px; color: #666; margin-top: 8px;">Points to: ' + site.domain + '</p>';
+              qrContainer.appendChild(qrCard);
+              
+              setTimeout(() => {
+                new QRCode(document.getElementById(`qr-${loc.location_id}`), {
+                  text: siteUrl,
+                  width: 150,
+                  height: 150,
+                  colorDark: "#000000",
+                  colorLight: "#ffffff",
+                  correctLevel: QRCode.CorrectLevel.H
+                });
+              }, 100);
             });
-          }, 100);
+          }
         });
-      });
+      }
 
       // Load and render feedback
       loadFeedback(tenantId);

@@ -576,3 +576,16 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - docs/CHANGE_LOG.md
   - public/embed-enhanced.js
   - public/embed.js
+
+---
+
+**2025-10-26T13:07:01.545Z** | Branch: `main` | Commit: `9abd164`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add feedback display in dashboard + Create standalone review page for QR codes
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
+  - public/review.html

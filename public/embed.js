@@ -298,11 +298,23 @@
           </div>
         </div>
 
-        <!-- Positive Rating View (4-5 stars) -->
-        <div id="gr-positive-view" class="gr-embed-view">
+        <!-- 5-Star View -->
+        <div id="gr-5star-view" class="gr-embed-view">
           <h2 class="gr-embed-title">🌟 Thank you!</h2>
           <p class="gr-embed-subtitle">We're thrilled you had a great experience! Would you mind sharing your feedback on Google?</p>
           <button class="gr-embed-submit" onclick="window.GoogleReviewsEmbed.redirectToGoogle()">Leave a Google Review</button>
+        </div>
+
+        <!-- 4-Star View -->
+        <div id="gr-4star-view" class="gr-embed-view">
+          <h2 class="gr-embed-title">Thanks for your feedback!</h2>
+          <p class="gr-embed-subtitle">We're glad you had a good experience. How can we make it even better?</p>
+          <form id="gr-improvement-form">
+            <div class="gr-embed-form-group">
+              <textarea class="gr-embed-textarea" id="gr-improvement-message" placeholder="What could we improve?"></textarea>
+            </div>
+            <button type="submit" class="gr-embed-submit">Submit & Leave Google Review</button>
+          </form>
         </div>
 
         <!-- Negative Rating View (1-3 stars) -->
@@ -359,6 +371,7 @@
     // Setup event handlers
     setupRatingStars();
     setupFeedbackForm();
+    setupImprovementForm();
 
     // Close modal on backdrop click
     modal.onclick = function(e) {
@@ -390,6 +403,27 @@
     });
   }
 
+  function handleRatingSelected(rating) {
+    logEvent('rating_selected', { rating });
+
+    // Hide rating view
+    document.getElementById('gr-rating-view').classList.remove('active');
+
+    // Show appropriate view based on rating
+    setTimeout(() => {
+      if (rating === 5) {
+        // 5 stars - direct to Google
+        document.getElementById('gr-5star-view').classList.add('active');
+      } else if (rating === 4) {
+        // 4 stars - ask for improvements
+        document.getElementById('gr-4star-view').classList.add('active');
+      } else {
+        // 1-3 stars - collect feedback
+        document.getElementById('gr-negative-view').classList.add('active');
+      }
+    }, 300);
+  }
+
   function updateStars(rating, permanent) {
     const stars = document.querySelectorAll('.gr-embed-star');
     stars.forEach((star, index) => {
@@ -401,22 +435,36 @@
     });
   }
 
-  function handleRatingSelected(rating) {
-    logEvent('rating_selected', { rating });
 
-    // Hide rating view
-    document.getElementById('gr-rating-view').classList.remove('active');
-
-    // Show appropriate view based on rating
-    setTimeout(() => {
-      if (rating >= 4) {
-        // Positive rating - redirect to Google
-        document.getElementById('gr-positive-view').classList.add('active');
-      } else {
-        // Negative rating - collect feedback
-        document.getElementById('gr-negative-view').classList.add('active');
+  // Setup 4-star improvement form
+  function setupImprovementForm() {
+    const form = document.getElementById('gr-improvement-form');
+    if (!form) return;
+    
+    form.onsubmit = async function(e) {
+      e.preventDefault();
+      
+      const message = document.getElementById('gr-improvement-message').value;
+      
+      // Only submit if there's a message
+      if (message && message.trim()) {
+        await apiCall('/api/feedback', 'POST', {
+          tenantId: embedData.tenantId,
+          siteId: embedData.siteId,
+          locationId: embedData.locationId,
+          rating: selectedRating,
+          message: message.trim(),
+          contactEmail: null,
+          contactPhone: null,
+          sessionId
+        });
+        
+        logEvent('improvement_submitted', { rating: selectedRating });
       }
-    }, 300);
+      
+      // Redirect to Google regardless
+      window.GoogleReviewsEmbed.redirectToGoogle();
+    };
   }
 
   // Setup feedback form submission
@@ -520,6 +568,14 @@
     injectStyles();
     createButton();
     createModal();
+
+    // Auto-open if URL parameter is present (for QR codes)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('openReview') === '1') {
+      setTimeout(() => {
+        window.GoogleReviewsEmbed.openModal();
+      }, 500);
+    }
   }
 
   // Initialize when DOM is ready
