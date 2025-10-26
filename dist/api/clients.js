@@ -17,6 +17,11 @@ async function getClients(req, res) {
         t.name as client_name,
         t.active,
         t.created_at,
+        (
+          SELECT COUNT(*)
+          FROM feedback f
+          WHERE f.tenant_id = t.id
+        ) as feedbackCount,
         json_agg(
           json_build_object(
             'site_id', s.id,

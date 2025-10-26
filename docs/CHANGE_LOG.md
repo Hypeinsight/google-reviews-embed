@@ -589,3 +589,17 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - docs/CHANGE_LOG.md
   - public/admin/dashboard.html
   - public/review.html
+
+---
+
+**2025-10-26T13:13:45.525Z** | Branch: `main` | Commit: `c0ef3d1`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add 4-star improvement flow + QR codes now auto-open widget on client site with ?openReview=1 parameter
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
+  - public/embed-enhanced.js
+  - public/embed.js

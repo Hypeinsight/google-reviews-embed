@@ -682,7 +682,7 @@
           '</div>' +
           '<div class="client-stats">' +
             '<div class="client-stat">' +
-              '<div class="client-stat-value">' + Object.keys(client.sites).length + '</div>' +
+              '<div class="client-stat-value">' + sites.length + '</div>' +
               '<div class="client-stat-label">Sites</div>' +
             '</div>' +
             '<div class="client-stat">' +
@@ -690,8 +690,8 @@
               '<div class="client-stat-label">Locations</div>' +
             '</div>' +
             '<div class="client-stat">' +
-              '<div class="client-stat-value">' + client.reviewCount + '</div>' +
-              '<div class="client-stat-label">Reviews</div>' +
+              '<div class="client-stat-value">' + (client.feedbackCount || 0) + '</div>' +
+              '<div class="client-stat-label">Feedback</div>' +
             '</div>' +
           '</div>';
         grid.appendChild(card);
