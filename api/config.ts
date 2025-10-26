@@ -1,4 +1,21 @@
 import { Request, Response } from 'express';
+import { query } from './db';
+
+interface ConfigRow {
+  tenant_id: string;
+  tenant_name: string;
+  tenant_active: boolean;
+  site_id: string;
+  site_domain: string;
+  site_active: boolean;
+  location_id: string;
+  location_name: string;
+  place_id: string;
+  location_active: boolean;
+  tenant_settings: any;
+  site_settings: any;
+  location_settings: any;
+}
 
 /**
  * GET /api/config
@@ -15,25 +32,91 @@ export async function getConfig(req: Request, res: Response): Promise<void> {
   try {
     const { tenantId, siteId, locationId } = req.query;
 
-    // TODO: Validate parameters
-    // TODO: Query database for configuration
-    // TODO: Return configuration including Place ID
+    // Validate parameters
+    if (!tenantId || !siteId || !locationId) {
+      res.status(400).json({
+        success: false,
+        error: 'Missing required parameters: tenantId, siteId, locationId'
+      });
+      return;
+    }
 
-    // Placeholder response
+    // Query database for configuration
+    const sql = `
+      SELECT 
+        t.id as tenant_id,
+        t.name as tenant_name,
+        t.active as tenant_active,
+        t.settings as tenant_settings,
+        s.id as site_id,
+        s.domain as site_domain,
+        s.active as site_active,
+        s.settings as site_settings,
+        l.id as location_id,
+        l.name as location_name,
+        l.place_id,
+        l.active as location_active,
+        l.settings as location_settings
+      FROM tenants t
+      JOIN sites s ON s.tenant_id = t.id
+      JOIN site_locations sl ON sl.site_id = s.id
+      JOIN locations l ON l.id = sl.location_id
+      WHERE t.id = $1
+        AND s.id = $2
+        AND l.id = $3
+        AND t.active = true
+        AND s.active = true
+        AND l.active = true
+    `;
+
+    const result = await query<ConfigRow>(sql, [tenantId, siteId, locationId]);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        error: 'Configuration not found or inactive'
+      });
+      return;
+    }
+
+    const row = result.rows[0];
+
+    // Merge settings with defaults
+    const defaultSettings = {
+      primaryColor: '#4285F4',
+      buttonText: 'Leave a Google Review',
+      collectFeedback: true,
+      feedbackBeforeReview: false
+    };
+
+    const mergedSettings = {
+      ...defaultSettings,
+      ...row.tenant_settings,
+      ...row.site_settings,
+      ...row.location_settings
+    };
+
+    // Build Google Reviews URL
+    const googleReviewUrl = `https://search.google.com/local/writereview?placeid=${row.place_id}`;
+
     res.status(200).json({
       success: true,
       config: {
-        tenantId,
-        siteId,
-        locationId,
-        placeId: 'ChIJN1t_tDeuEmsRUsoyG83frY4', // Example Place ID
+        tenantId: row.tenant_id,
+        tenantName: row.tenant_name,
+        siteId: row.site_id,
+        siteDomain: row.site_domain,
+        locationId: row.location_id,
+        locationName: row.location_name,
+        placeId: row.place_id,
+        googleReviewUrl,
         branding: {
-          primaryColor: '#4285F4',
-          buttonText: 'Leave a Google Review'
+          primaryColor: mergedSettings.primaryColor,
+          buttonText: mergedSettings.buttonText
         },
         settings: {
-          collectFeedback: true,
-          feedbackBeforeReview: false
+          collectFeedback: mergedSettings.collectFeedback,
+          feedbackBeforeReview: mergedSettings.feedbackBeforeReview
         }
       }
     });

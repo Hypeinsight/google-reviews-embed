@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { query } from './db';
 
 /**
  * POST /api/feedback
@@ -29,21 +30,99 @@ export async function submitFeedback(req: Request, res: Response): Promise<void>
       message,
       contactEmail,
       contactPhone,
-      timestamp,
       sessionId
     } = req.body;
 
-    // TODO: Validate request body
-    // TODO: Sanitise message content
-    // TODO: Insert feedback into database feedback table
-    // TODO: Optional: Trigger notification to tenant
+    // Validate required fields
+    if (!tenantId || !siteId || !locationId || !message) {
+      res.status(400).json({
+        success: false,
+        error: 'Missing required fields: tenantId, siteId, locationId, message'
+      });
+      return;
+    }
 
-    // Placeholder response
-    console.log('Feedback submitted:', { tenantId, siteId, locationId, rating });
+    // Validate rating if provided
+    if (rating !== undefined && (rating < 1 || rating > 5)) {
+      res.status(400).json({
+        success: false,
+        error: 'Rating must be between 1 and 5'
+      });
+      return;
+    }
+
+    // Validate message length
+    if (message.length > 5000) {
+      res.status(400).json({
+        success: false,
+        error: 'Message must be less than 5000 characters'
+      });
+      return;
+    }
+
+    // Sanitise message (basic - strip HTML tags)
+    const sanitisedMessage = message.replace(/<[^>]*>/g, '').trim();
+
+    if (sanitisedMessage.length === 0) {
+      res.status(400).json({
+        success: false,
+        error: 'Message cannot be empty'
+      });
+      return;
+    }
+
+    // Validate email format if provided
+    if (contactEmail) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(contactEmail)) {
+        res.status(400).json({
+          success: false,
+          error: 'Invalid email format'
+        });
+        return;
+      }
+    }
+
+    // Insert feedback into database
+    const sql = `
+      INSERT INTO feedback (
+        tenant_id,
+        site_id,
+        location_id,
+        rating,
+        message,
+        contact_email,
+        contact_phone,
+        session_id
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING id, created_at
+    `;
+
+    const result = await query(sql, [
+      tenantId,
+      siteId,
+      locationId,
+      rating || null,
+      sanitisedMessage,
+      contactEmail || null,
+      contactPhone || null,
+      sessionId || null
+    ]);
+
+    const feedback = result.rows[0];
+
+    console.log('Feedback submitted:', {
+      feedbackId: feedback.id,
+      tenantId,
+      siteId,
+      locationId,
+      rating
+    });
 
     res.status(200).json({
       success: true,
-      feedbackId: `fbk_${Date.now()}` // Placeholder feedback ID
+      feedbackId: feedback.id,
+      timestamp: feedback.created_at
     });
   } catch (error) {
     console.error('Error in submitFeedback:', error);

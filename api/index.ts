@@ -1,0 +1,115 @@
+import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import path from 'path';
+import { getConfig } from './config';
+import { logEvent } from './log';
+import { submitFeedback } from './feedback';
+import { testConnection } from './db';
+
+// Load environment variables
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// CORS configuration
+const corsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    const allowedOrigins = process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000'];
+    
+    // Allow requests with no origin (e.g., mobile apps, Postman)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+
+// Serve static files (embed.js)
+app.use('/embed', express.static(path.join(__dirname, '..', 'public')));
+
+// Health check endpoint
+app.get('/health', async (req: Request, res: Response) => {
+  const dbHealthy = await testConnection();
+  
+  res.status(dbHealthy ? 200 : 503).json({
+    status: dbHealthy ? 'healthy' : 'unhealthy',
+    timestamp: new Date().toISOString(),
+    service: 'google-reviews-embed',
+    database: dbHealthy ? 'connected' : 'disconnected'
+  });
+});
+
+// API routes
+app.get('/api/config', getConfig);
+app.post('/api/log', logEvent);
+app.post('/api/feedback', submitFeedback);
+
+// Root endpoint
+app.get('/', (req: Request, res: Response) => {
+  res.json({
+    service: 'Google Reviews Embed System',
+    version: '1.0.0',
+    endpoints: {
+      health: '/health',
+      config: 'GET /api/config',
+      log: 'POST /api/log',
+      feedback: 'POST /api/feedback',
+      embed: '/embed/embed.js'
+    }
+  });
+});
+
+// 404 handler
+app.use((req: Request, res: Response) => {
+  res.status(404).json({
+    error: 'Not Found',
+    path: req.path
+  });
+});
+
+// Error handler
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error('Error:', err);
+  res.status(500).json({
+    error: 'Internal Server Error',
+    message: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
+});
+
+// Start server
+app.listen(PORT, async () => {
+  console.log(`🚀 Google Reviews Embed API running on port ${PORT}`);
+  console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔗 Embed script: http://localhost:${PORT}/embed/embed.js`);
+  
+  // Test database connection on startup
+  const dbConnected = await testConnection();
+  if (!dbConnected) {
+    console.warn('⚠️  Database connection failed - check your .env configuration');
+  } else {
+    console.log('✓ Database connected');
+  }
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully...');
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received, shutting down gracefully...');
+  process.exit(0);
+});

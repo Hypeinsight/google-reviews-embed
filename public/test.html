@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Reviews Embed - Test Page</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-top: 0;
+    }
+    .info {
+      background: #e3f2fd;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 24px 0;
+      border-left: 4px solid #2196f3;
+    }
+    .info h3 {
+      margin-top: 0;
+      color: #1976d2;
+    }
+    .code {
+      background: #263238;
+      color: #aed581;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      margin: 16px 0;
+    }
+    .test-sections {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 32px;
+    }
+    .test-card {
+      background: #fafafa;
+      padding: 24px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+    }
+    .test-card h3 {
+      margin-top: 0;
+      color: #4285F4;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌟 Google Reviews Embed System - Test Page</h1>
+    
+    <div class="info">
+      <h3>Test Configuration</h3>
+      <p><strong>Tenant:</strong> tenant_demo</p>
+      <p><strong>Site:</strong> site_demo_main</p>
+      <p><strong>Location:</strong> loc_demo_hq</p>
+      <p style="margin-bottom: 0;"><strong>Note:</strong> The review button should appear in the bottom-right corner of the page.</p>
+    </div>
+
+    <h2>Setup Instructions</h2>
+    <ol>
+      <li>Make sure the API server is running: <code>npm run dev</code></li>
+      <li>Ensure the database is set up with schema: <code>psql -U your_user -d your_database -f db/schema.sql</code></li>
+      <li>Seed the database with test data: <code>npm run seed</code></li>
+      <li>Open this page: <code>http://localhost:3000/embed/test.html</code></li>
+      <li>Look for the "Leave a Google Review" button in the bottom-right corner</li>
+    </ol>
+
+    <h2>Expected Behaviour</h2>
+    <div class="test-sections">
+      <div class="test-card">
+        <h3>1. Widget Loads</h3>
+        <p>✓ Button appears in bottom-right</p>
+        <p>✓ Event logged: widget_loaded</p>
+      </div>
+
+      <div class="test-card">
+        <h3>2. Click Button</h3>
+        <p>✓ Modal opens</p>
+        <p>✓ Shows two options</p>
+        <p>✓ Event logged: button_clicked</p>
+      </div>
+
+      <div class="test-card">
+        <h3>3. Google Review</h3>
+        <p>✓ Opens Google in new tab</p>
+        <p>✓ Event logged: review_started</p>
+        <p>✓ Event logged: review_completed</p>
+      </div>
+
+      <div class="test-card">
+        <h3>4. Private Feedback</h3>
+        <p>✓ Shows feedback form</p>
+        <p>✓ Optional star rating</p>
+        <p>✓ Required message field</p>
+        <p>✓ Submits to API</p>
+        <p>✓ Shows success message</p>
+      </div>
+    </div>
+
+    <h2>API Endpoints to Test</h2>
+    
+    <div class="code">
+      # Get configuration<br>
+      curl "http://localhost:3000/api/config?tenantId=tenant_demo&siteId=site_demo_main&locationId=loc_demo_hq"<br>
+      <br>
+      # Check health<br>
+      curl "http://localhost:3000/health"<br>
+      <br>
+      # View events (check database)<br>
+      psql -d google_reviews_embed -c "SELECT * FROM events ORDER BY created_at DESC LIMIT 10;"<br>
+      <br>
+      # View feedback (check database)<br>
+      psql -d google_reviews_embed -c "SELECT * FROM feedback ORDER BY created_at DESC LIMIT 10;"
+    </div>
+
+    <h2>Integration Example</h2>
+    <p>To add this widget to any website, include the following script tag:</p>
+    
+    <div class="code">
+      &lt;script src="http://localhost:3000/embed/embed.js" <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-tenant-id="tenant_demo" <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-site-id="site_demo_main" <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-location-id="loc_demo_hq"<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-api-url="http://localhost:3000"&gt;<br>
+      &lt;/script&gt;
+    </div>
+  </div>
+
+  <!-- Google Reviews Embed Script -->
+  <script src="http://localhost:3000/embed/embed.js" 
+          data-tenant-id="tenant_demo" 
+          data-site-id="site_demo_main" 
+          data-location-id="loc_demo_hq"
+          data-api-url="http://localhost:3000">
+  </script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { query } from './db';
 
 /**
  * POST /api/log
@@ -18,18 +19,74 @@ import { Request, Response } from 'express';
  */
 export async function logEvent(req: Request, res: Response): Promise<void> {
   try {
-    const { tenantId, siteId, locationId, eventType, eventData, timestamp, sessionId } = req.body;
+    const { tenantId, siteId, locationId, eventType, eventData, sessionId } = req.body;
 
-    // TODO: Validate request body
-    // TODO: Insert event into database events table
-    // TODO: Handle session tracking
+    // Validate required fields
+    if (!tenantId || !siteId || !locationId || !eventType) {
+      res.status(400).json({
+        success: false,
+        error: 'Missing required fields: tenantId, siteId, locationId, eventType'
+      });
+      return;
+    }
 
-    // Placeholder response
-    console.log('Event logged:', { tenantId, siteId, locationId, eventType, timestamp });
+    // Validate event type
+    const validEventTypes = [
+      'widget_loaded',
+      'button_clicked',
+      'review_started',
+      'review_completed',
+      'feedback_opened',
+      'feedback_submitted',
+      'widget_closed'
+    ];
+
+    if (!validEventTypes.includes(eventType)) {
+      res.status(400).json({
+        success: false,
+        error: `Invalid eventType. Must be one of: ${validEventTypes.join(', ')}`
+      });
+      return;
+    }
+
+    // Extract user agent and IP
+    const userAgent = req.headers['user-agent'] || null;
+    const ipAddress = (req.headers['x-forwarded-for'] as string)?.split(',')[0] ||
+                     req.socket.remoteAddress ||
+                     null;
+
+    // Insert event into database
+    const sql = `
+      INSERT INTO events (
+        tenant_id,
+        site_id,
+        location_id,
+        event_type,
+        event_data,
+        session_id,
+        user_agent,
+        ip_address
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING id, created_at
+    `;
+
+    const result = await query(sql, [
+      tenantId,
+      siteId,
+      locationId,
+      eventType,
+      JSON.stringify(eventData || {}),
+      sessionId || null,
+      userAgent,
+      ipAddress
+    ]);
+
+    const event = result.rows[0];
 
     res.status(200).json({
       success: true,
-      eventId: `evt_${Date.now()}` // Placeholder event ID
+      eventId: event.id,
+      timestamp: event.created_at
     });
   } catch (error) {
     console.error('Error in logEvent:', error);
