@@ -973,37 +973,36 @@
   }
 
   function editClientFromDetail() {
-    if (!currentClientTenantId) return;
+    if (!currentClientTenantId || !currentClient) return;
     
-    const client = clientsData[currentClientTenantId];
-    const firstSite = Object.values(client.sites)[0];
+    const client = currentClient;
+    const firstSite = (client.sites && client.sites[0]) || {};
     
     // Populate form with existing data
     document.getElementById('modalTitle').textContent = 'Edit Client';
-    document.getElementById('clientName').value = client.name;
-    document.getElementById('siteDomain').value = firstSite.domain;
-    document.getElementById('buttonText').value = firstSite.buttonText || 'Leave a Review';
-    document.getElementById('buttonColor').value = firstSite.buttonColor || '#667eea';
-    document.getElementById('buttonColorHex').value = firstSite.buttonColor || '#667eea';
-    document.getElementById('whiteLabel').checked = firstSite.whiteLabel || false;
+    document.getElementById('clientName').value = client.client_name;
+    document.getElementById('siteDomain').value = firstSite.domain || '';
+    document.getElementById('buttonText').value = firstSite.button_text || 'Leave a Review';
+    document.getElementById('buttonColor').value = firstSite.button_color || '#667eea';
+    document.getElementById('buttonColorHex').value = firstSite.button_color || '#667eea';
+    document.getElementById('whiteLabel').checked = firstSite.white_label || false;
     
     // Populate locations
     const locationsContainer = document.getElementById('locationsContainer');
     locationsContainer.innerHTML = '';
     
-    const locations = firstSite.locations || {};
-    const locationEntries = Object.entries(locations);
+    const locations = firstSite.locations || [];
     
-    if (locationEntries.length === 0) {
+    if (locations.length === 0) {
       // Add one empty location input if no locations exist
       addLocationInput();
     } else {
-      locationEntries.forEach(([locId, loc]) => {
+      locations.forEach(loc => {
         const div = document.createElement('div');
         div.className = 'location-input';
         div.style.cssText = 'display: flex; gap: 8px; margin-bottom: 8px;';
         div.innerHTML = '<input type="text" placeholder="Location name" value="' + loc.name + '" style="flex: 1;" class="location-name">' +
-          '<input type="text" placeholder="Google review link" value="https://search.google.com/local/writereview?placeid=' + loc.placeId + '" style="flex: 2;" class="location-link">' +
+          '<input type="text" placeholder="Google review link" value="https://search.google.com/local/writereview?placeid=' + loc.place_id + '" style="flex: 2;" class="location-link">' +
           '<button type="button" onclick="removeLocation(this)" class="btn btn-secondary" style="padding: 8px 16px;">✕</button>';
         locationsContainer.appendChild(div);
       });
