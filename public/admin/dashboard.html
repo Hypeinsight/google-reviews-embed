@@ -927,24 +927,41 @@
         });
       });
 
-      // Render feedback
-      var feedbackBody = document.getElementById('feedbackBody');
-      feedbackBody.innerHTML = '';
-      if (client.feedback && client.feedback.length > 0) {
-        client.feedback.forEach(function(fb) {
-          var stars = '★'.repeat(fb.rating) + '☆'.repeat(5 - fb.rating);
-          var row = feedbackBody.insertRow();
-          row.innerHTML = '<td>' + fb.date + '</td>' +
-            '<td>' + fb.location + '</td>' +
-            '<td><span class="rating-stars">' + stars + '</span></td>' +
-            '<td>' + fb.message + '</td>' +
-            '<td>' + (fb.contact || '-') + '</td>';
-        });
-      } else {
-        feedbackBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 32px; color: #666;">No feedback yet</td></tr>';
-      }
+      // Load and render feedback
+      loadFeedback(tenantId);
 
       document.getElementById('clientDetailModal').classList.add('active');
+    }
+
+    async function loadFeedback(tenantId) {
+      var feedbackBody = document.getElementById('feedbackBody');
+      feedbackBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 32px; color: #666;">Loading...</td></tr>';
+      
+      try {
+        const response = await fetch('/api/feedback?tenantId=' + tenantId);
+        const data = await response.json();
+        
+        feedbackBody.innerHTML = '';
+        
+        if (data.success && data.feedback && data.feedback.length > 0) {
+          data.feedback.forEach(function(fb) {
+            var stars = fb.rating ? '★'.repeat(fb.rating) + '☆'.repeat(5 - fb.rating) : 'N/A';
+            var row = feedbackBody.insertRow();
+            var date = new Date(fb.created_at).toLocaleDateString();
+            var contact = fb.contact_email || fb.contact_phone || '-';
+            row.innerHTML = '<td>' + date + '</td>' +
+              '<td>' + fb.location_name + '</td>' +
+              '<td><span class="rating-stars">' + stars + '</span></td>' +
+              '<td>' + fb.message + '</td>' +
+              '<td>' + contact + '</td>';
+          });
+        } else {
+          feedbackBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 32px; color: #666;">No feedback yet</td></tr>';
+        }
+      } catch (error) {
+        console.error('Failed to load feedback:', error);
+        feedbackBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 32px; color: #e74c3c;">Failed to load feedback</td></tr>';
+      }
     }
 
   let currentClientTenantId = null;

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leave a Review</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      text-align: center;
+      color: white;
+    }
+    .logo {
+      font-size: 64px;
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    p {
+      font-size: 18px;
+      opacity: 0.9;
+      margin-bottom: 32px;
+    }
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .error {
+      background: rgba(231, 76, 60, 0.9);
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 24px;
+      max-width: 500px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">⭐</div>
+    <h1>Share Your Experience</h1>
+    <p>Loading review form...</p>
+    <div class="spinner"></div>
+    <div id="error" class="error" style="display: none;"></div>
+  </div>
+
+  <script>
+    // Get URL parameters
+    const params = new URLSearchParams(window.location.search);
+    const tenantId = params.get('tenant');
+    const siteId = params.get('site');
+    const locationId = params.get('location');
+
+    if (!tenantId || !siteId || !locationId) {
+      document.getElementById('error').textContent = 'Invalid review link. Please contact the business for a valid link.';
+      document.getElementById('error').style.display = 'block';
+      document.querySelector('.spinner').style.display = 'none';
+    } else {
+      // Create and inject the embed script with these parameters
+      const script = document.createElement('script');
+      script.src = `${window.location.origin}/embed/embed.js`;
+      script.setAttribute('data-tenant-id', tenantId);
+      script.setAttribute('data-site-id', siteId);
+      script.setAttribute('data-location-id', locationId);
+      script.setAttribute('data-api-url', window.location.origin);
+      
+      // Auto-open modal when script loads
+      script.onload = function() {
+        setTimeout(() => {
+          if (window.GoogleReviewsEmbed) {
+            // Hide the button (we don't need it on this page)
+            const button = document.querySelector('.gr-embed-button');
+            if (button) button.style.display = 'none';
+            
+            // Open the modal immediately
+            window.GoogleReviewsEmbed.openModal();
+          } else {
+            document.getElementById('error').textContent = 'Failed to load review form. Please try again.';
+            document.getElementById('error').style.display = 'block';
+            document.querySelector('.spinner').style.display = 'none';
+          }
+        }, 500);
+      };
+      
+      script.onerror = function() {
+        document.getElementById('error').textContent = 'Failed to load review form. Please check your connection and try again.';
+        document.getElementById('error').style.display = 'block';
+        document.querySelector('.spinner').style.display = 'none';
+      };
+      
+      document.body.appendChild(script);
+    }
+  </script>
+</body>
+</html>

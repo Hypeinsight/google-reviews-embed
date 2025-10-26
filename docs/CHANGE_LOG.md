@@ -559,3 +559,20 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - dist/api/config.js
   - docs/CHANGE_LOG.md
   - public/admin/dashboard.html
+
+---
+
+**2025-10-26T13:03:05.535Z** | Branch: `main` | Commit: `f248351`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add Google review option to negative feedback per policy + Add GET /api/feedback endpoint
+
+**Files changed:**
+  - api/feedback.ts
+  - api/index.ts
+  - dist/api/feedback.js
+  - dist/api/index.js
+  - docs/CHANGE_LOG.md
+  - public/embed-enhanced.js
+  - public/embed.js
