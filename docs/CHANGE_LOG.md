@@ -76,3 +76,21 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 
 **Files changed:**
   - SUMMARY.md
+
+---
+
+**2025-10-26T02:13:24.988Z** | Branch: `main` | Commit: `9a509b0`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add premium UI with glassmorphism and smart sentiment-based routing (4-5 stars -> Google, 1-3 stars -> private feedback)
+
+**Files changed:**
+  - api/demo-server.ts
+  - api/mock-db.ts
+  - docs/CHANGE_LOG.md
+  - docs/TECH_STACK.md
+  - package.json
+  - public/embed-v2.js
+  - public/embed.js
+  - public/test.html
