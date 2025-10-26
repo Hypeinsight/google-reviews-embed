@@ -258,3 +258,16 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - docs/CHANGE_LOG.md
   - public/admin/dashboard.html
   - scripts/init_database.js
+
+---
+
+**2025-10-26T06:31:00.534Z** | Branch: `main` | Commit: `21c5060`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix static file serving for admin dashboard
+
+**Files changed:**
+  - api/index.ts
+  - dist/api/index.js
+  - docs/CHANGE_LOG.md

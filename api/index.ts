@@ -37,10 +37,11 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Serve static files
-app.use('/embed', express.static(path.join(__dirname, '..', 'public')));
-app.use('/admin', express.static(path.join(__dirname, '..', 'public', 'admin')));
-app.use(express.static(path.join(__dirname, '..', 'public')));
+// Serve static files (path is relative to dist/api when compiled)
+const publicPath = path.join(__dirname, '..', '..', 'public');
+app.use('/embed', express.static(publicPath));
+app.use('/admin', express.static(path.join(publicPath, 'admin')));
+app.use(express.static(publicPath));
 
 // Health check endpoint
 app.get('/health', async (req: Request, res: Response) => {

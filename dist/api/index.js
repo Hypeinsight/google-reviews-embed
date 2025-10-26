@@ -36,10 +36,11 @@ const corsOptions = {
     credentials: true
 };
 app.use((0, cors_1.default)(corsOptions));
-// Serve static files
-app.use('/embed', express_1.default.static(path_1.default.join(__dirname, '..', 'public')));
-app.use('/admin', express_1.default.static(path_1.default.join(__dirname, '..', 'public', 'admin')));
-app.use(express_1.default.static(path_1.default.join(__dirname, '..', 'public')));
+// Serve static files (path is relative to dist/api when compiled)
+const publicPath = path_1.default.join(__dirname, '..', '..', 'public');
+app.use('/embed', express_1.default.static(publicPath));
+app.use('/admin', express_1.default.static(path_1.default.join(publicPath, 'admin')));
+app.use(express_1.default.static(publicPath));
 // Health check endpoint
 app.get('/health', async (req, res) => {
     const dbHealthy = await (0, db_1.testConnection)();
