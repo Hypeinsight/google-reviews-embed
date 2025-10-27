@@ -113,6 +113,19 @@
         box-shadow: 0 4px 24px rgba(0,0,0,0.06);
         text-align: center;
         border: 1px solid #e5e7eb;
+        position: relative;
+        animation: floatingShadow 6s ease-in-out infinite;
+      }
+      
+      @keyframes floatingShadow {
+        0%, 100% {
+          box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 8px 40px rgba(0,0,0,0.03);
+          transform: translateY(0px);
+        }
+        50% {
+          box-shadow: 0 8px 32px rgba(0,0,0,0.08), 0 12px 48px rgba(0,0,0,0.04);
+          transform: translateY(-4px);
+        }
       }
       
       @media (max-width: 768px) {

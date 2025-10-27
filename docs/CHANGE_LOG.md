@@ -751,3 +751,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - docs/CHANGE_LOG.md
   - docs/STANDALONE_PAGE.md
   - public/embed-page.js
+
+---
+
+**2025-10-27T12:48:03.153Z** | Branch: `main` | Commit: `54cc4ec`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add Page Embed tab to dashboard showing both button and page embed options
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
