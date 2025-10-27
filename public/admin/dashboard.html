@@ -1078,13 +1078,13 @@
               var scriptDomain = 'https://reviews.hypeawareness.com';
               var apiDomain = 'https://reviews.hypeawareness.com';
               
-              var pageEmbedCode = '<script src="' + scriptDomain + '/embed/embed-page.js" async data-tenant-id="' + tenantId + '" data-site-id="' + siteId + '" data-location-id="' + locId + '" data-page-title="Share Your Experience" data-page-subtitle="Thank you for being a valued customer. We\'d love to hear about your experience with us." data-button-text="' + (site.button_text || 'Leave a Review') + '" data-button-color="' + (site.button_color || '#46B646') + '" data-white-label="' + (site.white_label ? 'true' : 'false') + '" data-api-url="' + apiDomain + '"><\/script>';
+              var pageEmbedCode = '<script src="' + scriptDomain + '/embed/embed-page.js" async data-tenant-id="' + tenantId + '" data-site-id="' + siteId + '" data-location-id="' + locId + '" data-button-text="' + (site.button_text || 'Leave a Review') + '" data-button-color="' + (site.button_color || '#46B646') + '" data-white-label="' + (site.white_label ? 'true' : 'false') + '" data-api-url="' + apiDomain + '"><\/script>';
               
               pageEmbedHtml += '<div style="margin-bottom: 24px;" data-embed-code="' + pageEmbedCode.replace(/"/g, '&quot;') + '">' +
                 '<h4 style="margin-bottom: 8px;">' + loc.name + '</h4>' +
                 '<div class="embed-code">' + pageEmbedCode.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>' +
                 '<button class="btn btn-secondary" onclick="copyEmbedFromParent(this)" style="margin-top: 8px;">📋 Copy Code</button>' +
-                '<p style="color: rgba(255, 255, 255, 0.6); font-size: 13px; margin-top: 8px;">💡 Customize data-page-title and data-page-subtitle attributes as needed</p>' +
+                '<p style="color: rgba(255, 255, 255, 0.6); font-size: 13px; margin-top: 8px;">💡 Uses default content. Add data-page-title and data-page-subtitle attributes to customize.</p>' +
                 '</div>';
             });
           }

@@ -811,3 +811,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/embed-page.js
+
+---
+
+**2025-10-27T13:36:04.044Z** | Branch: `main` | Commit: `b76f0f0`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Update page embed default content with structured sections and bullet points
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/embed-page.js
