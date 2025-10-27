@@ -105,11 +105,11 @@
       }
       
       .gr-page-container {
-        max-width: 600px;
+        max-width: 650px;
         width: 90%;
         background: white;
         border-radius: 16px;
-        padding: 48px 40px;
+        padding: 56px 48px;
         box-shadow: 0 4px 24px rgba(0,0,0,0.06);
         text-align: center;
         border: 1px solid #e5e7eb;
@@ -153,7 +153,11 @@
         font-size: 16px;
         color: #6b7280;
         margin: 0 0 32px 0;
-        line-height: 1.6;
+        line-height: 1.8;
+        max-width: 540px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: left;
       }
       
       .gr-page-button {
