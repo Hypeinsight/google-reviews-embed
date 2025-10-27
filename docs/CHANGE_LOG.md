@@ -775,3 +775,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/embed-page.js
+
+---
+
+**2025-10-27T13:24:13.260Z** | Branch: `main` | Commit: `502d25b`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Improve page embed text formatting with better spacing and left-aligned body text
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/embed-page.js

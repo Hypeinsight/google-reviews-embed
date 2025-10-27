@@ -736,14 +736,30 @@
           <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 16px;">Creates a dedicated review page - perfect for /reviews or /feedback pages.</p>
           
           <div style="background: rgba(70, 182, 70, 0.1); border-left: 3px solid var(--color-primary); padding: 16px; border-radius: 8px; margin-bottom: 24px;">
-            <h4 style="margin-top: 0; color: var(--color-primary); font-size: 16px;">📄 Page Embed Instructions</h4>
+            <h4 style="margin-top: 0; color: var(--color-primary); font-size: 16px;">📄 Page Embed Setup Instructions</h4>
             <ol style="color: rgba(255, 255, 255, 0.9); margin: 12px 0 0 20px; line-height: 1.8;">
-              <li><strong>Create</strong> a new page (e.g., reviews.html or feedback.html)</li>
-              <li><strong>Paste</strong> ONLY the embed code below into the page - no other content needed</li>
-              <li><strong>Customize</strong> the title and subtitle in the code attributes</li>
-              <li><strong>Publish</strong> and share the page URL via QR codes, emails, or links</li>
+              <li><strong>Create a blank HTML file</strong> (e.g., <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;">reviews.html</code>) on the client's website</li>
+              <li><strong>Copy the complete HTML structure:</strong>
+                <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 6px; margin-top: 8px; font-family: monospace; font-size: 12px;">
+                  &lt;!DOCTYPE html&gt;<br>
+                  &lt;html&gt;<br>
+                  &lt;head&gt;<br>
+                  &nbsp;&nbsp;&lt;meta charset="UTF-8"&gt;<br>
+                  &nbsp;&nbsp;&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;<br>
+                  &nbsp;&nbsp;&lt;title&gt;Leave a Review&lt;/title&gt;<br>
+                  &lt;/head&gt;<br>
+                  &lt;body&gt;<br>
+                  &nbsp;&nbsp;[PASTE EMBED CODE HERE]<br>
+                  &lt;/body&gt;<br>
+                  &lt;/html&gt;
+                </div>
+              </li>
+              <li><strong>Paste the embed code</strong> below between the &lt;body&gt; tags - replace [PASTE EMBED CODE HERE]</li>
+              <li><strong>Customize</strong> the <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;">data-page-title</code> and <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;">data-page-subtitle</code> attributes in the code</li>
+              <li><strong>Upload</strong> the file to the client's website (e.g., <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;">yoursite.com/reviews.html</code>)</li>
+              <li><strong>Share</strong> the page URL via QR codes, emails, or direct links</li>
             </ol>
-            <p style="color: rgba(255, 255, 255, 0.7); font-size: 13px; margin: 12px 0 0 0;">💡 <strong>Tip:</strong> This creates a clean, minimal landing page that won't clash with any brand design.</p>
+            <p style="color: rgba(255, 255, 255, 0.7); font-size: 13px; margin: 12px 0 0 0;">⚠️ <strong>Important:</strong> This creates a standalone page that takes over the entire page. Do NOT add this to existing pages with headers/footers. For existing pages, use the "Button Embed" instead.</p>
           </div>
           
           <div id="pageEmbedCodes"></div>
