@@ -684,7 +684,8 @@
 
       <div class="tabs">
         <button class="tab active" onclick="switchDetailTab('overview')">Overview</button>
-        <button class="tab" onclick="switchDetailTab('embed')">Embed Codes</button>
+        <button class="tab" onclick="switchDetailTab('embed')">Button Embed</button>
+        <button class="tab" onclick="switchDetailTab('page')">Page Embed</button>
         <button class="tab" onclick="switchDetailTab('qr')">QR Codes</button>
         <button class="tab" onclick="switchDetailTab('feedback')">Feedback</button>
       </div>
@@ -712,8 +713,8 @@
 
       <div id="detail-embed" class="detail-tab" style="display: none;">
         <div class="section">
-          <h3>Embed Codes for Each Location</h3>
-          <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 16px;">Copy and paste these codes into your client's website.</p>
+          <h3>Button Embed Codes (Floating Button)</h3>
+          <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 16px;">Adds a floating review button to the client's website.</p>
           
           <div style="background: rgba(70, 182, 70, 0.1); border-left: 3px solid var(--color-primary); padding: 16px; border-radius: 8px; margin-bottom: 24px;">
             <h4 style="margin-top: 0; color: var(--color-primary); font-size: 16px;">📋 Installation Instructions</h4>
@@ -726,6 +727,26 @@
           </div>
           
           <div id="embedCodes"></div>
+        </div>
+      </div>
+
+      <div id="detail-page" class="detail-tab" style="display: none;">
+        <div class="section">
+          <h3>Page Embed Codes (Standalone Landing Page)</h3>
+          <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 16px;">Creates a dedicated review page - perfect for /reviews or /feedback pages.</p>
+          
+          <div style="background: rgba(70, 182, 70, 0.1); border-left: 3px solid var(--color-primary); padding: 16px; border-radius: 8px; margin-bottom: 24px;">
+            <h4 style="margin-top: 0; color: var(--color-primary); font-size: 16px;">📄 Page Embed Instructions</h4>
+            <ol style="color: rgba(255, 255, 255, 0.9); margin: 12px 0 0 20px; line-height: 1.8;">
+              <li><strong>Create</strong> a new page (e.g., reviews.html or feedback.html)</li>
+              <li><strong>Paste</strong> ONLY the embed code below into the page - no other content needed</li>
+              <li><strong>Customize</strong> the title and subtitle in the code attributes</li>
+              <li><strong>Publish</strong> and share the page URL via QR codes, emails, or links</li>
+            </ol>
+            <p style="color: rgba(255, 255, 255, 0.7); font-size: 13px; margin: 12px 0 0 0;">💡 <strong>Tip:</strong> This creates a clean, minimal landing page that won't clash with any brand design.</p>
+          </div>
+          
+          <div id="pageEmbedCodes"></div>
         </div>
       </div>
 
@@ -1029,6 +1050,31 @@
         });
       }
       document.getElementById('embedCodes').innerHTML = embedHtml;
+
+      // Render page embed codes
+      let pageEmbedHtml = '';
+      if (client.sites) {
+        client.sites.forEach(site => {
+          const siteId = site.site_id;
+          if (site.locations) {
+            site.locations.forEach(loc => {
+              const locId = loc.location_id;
+              var scriptDomain = 'https://reviews.hypeawareness.com';
+              var apiDomain = 'https://reviews.hypeawareness.com';
+              
+              var pageEmbedCode = '<script src="' + scriptDomain + '/embed/embed-page.js" async data-tenant-id="' + tenantId + '" data-site-id="' + siteId + '" data-location-id="' + locId + '" data-page-title="Share Your Experience" data-page-subtitle="Thank you for being a valued customer. We\'d love to hear about your experience with us." data-button-text="' + (site.button_text || 'Leave a Review') + '" data-button-color="' + (site.button_color || '#46B646') + '" data-white-label="' + (site.white_label ? 'true' : 'false') + '" data-api-url="' + apiDomain + '"><\/script>';
+              
+              pageEmbedHtml += '<div style="margin-bottom: 24px;" data-embed-code="' + pageEmbedCode.replace(/"/g, '&quot;') + '">' +
+                '<h4 style="margin-bottom: 8px;">' + loc.name + '</h4>' +
+                '<div class="embed-code">' + pageEmbedCode.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>' +
+                '<button class="btn btn-secondary" onclick="copyEmbedFromParent(this)" style="margin-top: 8px;">📋 Copy Code</button>' +
+                '<p style="color: rgba(255, 255, 255, 0.6); font-size: 13px; margin-top: 8px;">💡 Customize data-page-title and data-page-subtitle attributes as needed</p>' +
+                '</div>';
+            });
+          }
+        });
+      }
+      document.getElementById('pageEmbedCodes').innerHTML = pageEmbedHtml;
 
       // Render QR codes
       const qrContainer = document.getElementById('qrCodes');

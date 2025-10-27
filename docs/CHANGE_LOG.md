@@ -738,3 +738,16 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 
 **Files changed:**
   - docs/CHANGE_LOG.md
+
+---
+
+**2025-10-27T12:40:57.164Z** | Branch: `main` | Commit: `fa46cbd`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add standalone page embed script (embed-page.js) for dedicated review pages
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - docs/STANDALONE_PAGE.md
+  - public/embed-page.js
