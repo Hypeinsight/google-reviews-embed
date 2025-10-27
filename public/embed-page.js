@@ -31,8 +31,8 @@
           locationId: scripts[i].getAttribute('data-location-id'),
           apiUrl: scripts[i].getAttribute('data-api-url') || 'http://localhost:3000',
           whiteLabel: scripts[i].getAttribute('data-white-label') === 'true',
-          pageTitle: scripts[i].getAttribute('data-page-title') || 'Share Your Experience',
-          pageSubtitle: scripts[i].getAttribute('data-page-subtitle') || 'Thank you for being a valued customer. We\'d love to hear about your experience with us.'
+          pageTitle: scripts[i].getAttribute('data-page-title') || 'We\'d Love to Hear What You Think!',
+          pageSubtitle: scripts[i].getAttribute('data-page-subtitle') || '<p>Your feedback is incredibly important to us. As a valued customer, your experience helps us understand what we\'re doing well and where we can improve. By sharing your thoughts, you\'re not just leaving a review – you\'re helping us build a better experience for you and the entire community.</p><h3 style="font-size: 18px; font-weight: 600; color: #1a1a1a; margin: 24px 0 12px 0;">Why Your Feedback Matters</h3><ul style="margin: 0; padding-left: 20px; text-align: left;"><li style="margin-bottom: 8px;"><strong>It Helps Us Improve:</strong> Honest feedback is the most powerful tool we have. It guides our decisions and allows us to focus on what truly matters to you.</li><li style="margin-bottom: 8px;"><strong>It Helps Others:</strong> Your experience provides valuable insight for other customers, helping them make informed choices.</li><li style="margin-bottom: 8px;"><strong>It Strengthens Our Community:</strong> Every review contributes to a transparent and trustworthy environment for everyone.</li></ul><p style="margin-top: 20px;">We would be so grateful if you could take a few moments to share your experience with us. Whether it\'s a suggestion, a compliment, or a critique, we\'re ready to listen.</p><p style="margin-top: 12px; font-weight: 500;">Thank you for your time and for being a part of our journey.</p>'
         };
       }
     }
@@ -367,7 +367,7 @@
     container.className = 'gr-page-container';
     container.innerHTML = `
       <h1 class="gr-page-title">${embedData.pageTitle}</h1>
-      <p class="gr-page-subtitle">${embedData.pageSubtitle}</p>
+      <div class="gr-page-subtitle">${embedData.pageSubtitle}</div>
       <button class="gr-page-button" onclick="window.GoogleReviewsEmbed.openModal()">${config.branding?.buttonText || 'Leave a Review'}</button>
     `;
     document.body.appendChild(container);

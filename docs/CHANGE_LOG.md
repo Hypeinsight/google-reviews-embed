@@ -799,3 +799,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/admin/dashboard.html
+
+---
+
+**2025-10-27T13:30:38.788Z** | Branch: `main` | Commit: `ffcc71e`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Make floating shadow animation more visible with deeper shadows
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/embed-page.js
