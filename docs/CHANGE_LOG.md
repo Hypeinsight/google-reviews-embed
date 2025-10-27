@@ -702,3 +702,16 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - docs/CHANGE_LOG.md
   - public/embed-enhanced.js
   - public/embed.js
+
+---
+
+**2025-10-27T04:00:08.383Z** | Branch: `main` | Commit: `d61597f`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Update UTM campaign to powered_by_review_modal
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/embed-enhanced.js
+  - public/embed.js

@@ -13,11 +13,11 @@ export async function getClients(req: Request, res: Response) {
         t.name as client_name,
         t.active,
         t.created_at,
-        (
-          SELECT COUNT(*)
+        COALESCE((
+          SELECT COUNT(*)::INTEGER
           FROM feedback f
           WHERE f.tenant_id = t.id
-        ) as feedbackCount,
+        ), 0) as feedbackCount,
         json_agg(
           json_build_object(
             'site_id', s.id,
