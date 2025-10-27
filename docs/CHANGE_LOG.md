@@ -715,3 +715,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - docs/CHANGE_LOG.md
   - public/embed-enhanced.js
   - public/embed.js
+
+---
+
+**2025-10-27T04:15:27.313Z** | Branch: `main` | Commit: `f770395`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix feedback count SQL to use COALESCE and return integer
+
+**Files changed:**
+  - api/clients.ts
+  - docs/CHANGE_LOG.md
