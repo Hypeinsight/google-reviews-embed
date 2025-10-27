@@ -768,9 +768,22 @@
 
       <div id="detail-qr" class="detail-tab" style="display: none;">
         <div class="section">
-          <h3>QR Codes for Each Location</h3>
-          <p style="color: #666; margin-bottom: 16px;">Download QR codes to print for in-store use.</p>
+          <h3>QR Codes - Auto-Open Widget</h3>
+          <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 16px;">These QR codes point to the client's website and automatically open the review popup.</p>
           <div id="qrCodes" class="qr-grid"></div>
+        </div>
+        
+        <div class="section" style="margin-top: 32px;">
+          <h3>QR Code - Review Page</h3>
+          <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 16px;">Generate a QR code that points directly to your standalone review page.</p>
+          
+          <div style="background: rgba(70, 182, 70, 0.1); border-left: 3px solid var(--color-primary); padding: 16px; border-radius: 8px; margin-bottom: 24px;">
+            <p style="color: rgba(255, 255, 255, 0.9); margin: 0; line-height: 1.6;">
+              📍 First, upload your review page (using Page Embed code) to the client's website, then enter the full URL below to generate a QR code.
+            </p>
+          </div>
+          
+          <div id="customQRGenerator"></div>
         </div>
       </div>
 
@@ -1124,6 +1137,21 @@
           }
         });
       }
+      
+      // Render custom QR code generator for review page
+      const customQRContainer = document.getElementById('customQRGenerator');
+      customQRContainer.innerHTML = 
+        '<div style="display: flex; flex-direction: column; gap: 16px;">' +
+          '<div style="display: flex; gap: 12px; align-items: center;">' +
+            '<input type="url" id="customPageUrl" placeholder="https://yoursite.com/reviews.html" style="flex: 1; padding: 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(255,255,255,0.05); color: #fff; font-size: 14px;" />' +
+            '<button class="btn btn-primary" onclick="generateCustomQR()" style="padding: 12px 24px; white-space: nowrap;">Generate QR Code</button>' +
+          '</div>' +
+          '<div id="customQRDisplay" style="display: none; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 24px; text-align: center;">' +
+            '<div id="customQRCode" style="margin: 0 auto; width: 200px; height: 200px; display: flex; justify-content: center; align-items: center;"></div>' +
+            '<button class="btn btn-secondary" onclick="downloadCustomQR()" style="margin-top: 16px;">Download QR Code</button>' +
+            '<p id="customQRUrl" style="font-size: 12px; color: #666; margin-top: 8px; word-break: break-all;"></p>' +
+          '</div>' +
+        '</div>';
 
       // Load and render feedback
       loadFeedback(tenantId);
@@ -1264,6 +1292,58 @@
         a.href = url;
         a.download = `QR-${filename.replace(/\s+/g, '-')}.png`;
         a.click();
+      }
+    }
+    
+    let customQRInstance = null;
+    
+    function generateCustomQR() {
+      const urlInput = document.getElementById('customPageUrl');
+      const url = urlInput.value.trim();
+      
+      // Validate URL
+      if (!url) {
+        alert('⚠️ Please enter a URL for your review page');
+        return;
+      }
+      
+      try {
+        new URL(url); // Validate URL format
+      } catch (e) {
+        alert('⚠️ Please enter a valid URL (e.g., https://yoursite.com/reviews.html)');
+        return;
+      }
+      
+      // Clear previous QR code if exists
+      const qrCodeContainer = document.getElementById('customQRCode');
+      qrCodeContainer.innerHTML = '';
+      
+      // Generate new QR code
+      customQRInstance = new QRCode(qrCodeContainer, {
+        text: url,
+        width: 200,
+        height: 200,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+      
+      // Show the QR code display section
+      document.getElementById('customQRDisplay').style.display = 'block';
+      document.getElementById('customQRUrl').textContent = 'Points to: ' + url;
+    }
+    
+    function downloadCustomQR() {
+      const canvas = document.querySelector('#customQRCode canvas');
+      if (canvas) {
+        const url = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = url;
+        const clientName = currentClient ? currentClient.client_name : 'ReviewPage';
+        a.download = `QR-${clientName.replace(/\s+/g, '-')}-ReviewPage.png`;
+        a.click();
+      } else {
+        alert('⚠️ Please generate a QR code first');
       }
     }
 
