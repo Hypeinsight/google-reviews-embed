@@ -382,7 +382,7 @@
           </div>
         </div>
         
-        ${!embedData.whiteLabel ? '<div class="gr-embed-footer">Powered by <a href="https://hypeinsight.com/?utm_source=review_widget&utm_medium=referral&utm_campaign=powered_by" target="_blank" rel="noopener">Hype Insight</a></div>' : ''}
+        ${!embedData.whiteLabel ? '<div class="gr-embed-footer">Powered by <a href="https://hypeinsight.com/?utm_source=review_widget&utm_medium=referral&utm_campaign=powered_by_review_modal" target="_blank" rel="noopener">Hype Insight</a></div>' : ''}
       </div>
     `;
 

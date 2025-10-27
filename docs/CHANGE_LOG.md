@@ -689,3 +689,16 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/embed.js
+
+---
+
+**2025-10-27T02:32:24.974Z** | Branch: `main` | Commit: `f6fd13a`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Update footer link to hypeinsight.com with UTM tracking
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/embed-enhanced.js
+  - public/embed.js
