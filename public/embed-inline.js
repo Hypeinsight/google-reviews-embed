@@ -1,9 +1,9 @@
 /**
- * Google Reviews Embed Script - Standalone Page Version
+ * Google Reviews Embed Script - Inline Version
  * Version 1.0.0
  * 
- * Creates a minimal landing page for collecting reviews.
- * Perfect for dedicated review pages without floating buttons.
+ * Renders a button inline within the parent container (no fixed positioning).
+ * Perfect for embedding within existing page content.
  */
 
 (function() {
@@ -24,15 +24,16 @@
   function getScriptData() {
     const scripts = document.getElementsByTagName('script');
     for (let i = 0; i < scripts.length; i++) {
-      if (scripts[i].src && scripts[i].src.includes('embed-page')) {
+      if (scripts[i].src && scripts[i].src.includes('embed-inline')) {
         return {
           tenantId: scripts[i].getAttribute('data-tenant-id'),
           siteId: scripts[i].getAttribute('data-site-id'),
           locationId: scripts[i].getAttribute('data-location-id'),
           apiUrl: scripts[i].getAttribute('data-api-url') || 'http://localhost:3000',
           whiteLabel: scripts[i].getAttribute('data-white-label') === 'true',
-          pageTitle: scripts[i].getAttribute('data-page-title') || 'We\'d Love to Hear What You Think!',
-          pageSubtitle: scripts[i].getAttribute('data-page-subtitle') || '<p>Your feedback is incredibly important to us. As a valued customer, your experience helps us understand what we\'re doing well and where we can improve. By sharing your thoughts, you\'re not just leaving a review – you\'re helping us build a better experience for you and the entire community.</p><h3 style="font-size: 18px; font-weight: 600; color: #1a1a1a; margin: 24px 0 12px 0;">Why Your Feedback Matters</h3><ul style="margin: 0; padding-left: 20px; text-align: left;"><li style="margin-bottom: 8px;"><strong>It Helps Us Improve:</strong> Honest feedback is the most powerful tool we have. It guides our decisions and allows us to focus on what truly matters to you.</li><li style="margin-bottom: 8px;"><strong>It Helps Others:</strong> Your experience provides valuable insight for other customers, helping them make informed choices.</li><li style="margin-bottom: 8px;"><strong>It Strengthens Our Community:</strong> Every review contributes to a transparent and trustworthy environment for everyone.</li></ul><p style="margin-top: 20px;">We would be so grateful if you could take a few moments to share your experience with us. Whether it\'s a suggestion, a compliment, or a critique, we\'re ready to listen.</p><p style="margin-top: 12px; font-weight: 500;">Thank you for your time and for being a part of our journey.</p>'
+          buttonText: scripts[i].getAttribute('data-button-text'),
+          buttonColor: scripts[i].getAttribute('data-button-color'),
+          scriptElement: scripts[i]
         };
       }
     }
@@ -88,112 +89,28 @@
 
   // Inject CSS styles
   function injectStyles() {
-    const primaryColor = config.branding?.primaryColor || '#4285F4';
+    const primaryColor = embedData.buttonColor || config.branding?.primaryColor || '#4285F4';
     const style = document.createElement('style');
     style.textContent = `
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
       
-      body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        margin: 0;
-        padding: 0;
-        background: #f9fafb;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      .gr-page-container {
-        max-width: 650px;
-        width: 90%;
-        background: white;
-        border-radius: 16px;
-        padding: 56px 48px;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-        text-align: center;
-        border: 1px solid #e5e7eb;
-        position: relative;
-        animation: floatingShadow 6s ease-in-out infinite;
-      }
-      
-      @keyframes floatingShadow {
-        0%, 100% {
-          box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.06);
-          transform: translateY(0px);
-        }
-        50% {
-          box-shadow: 0 16px 48px rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.1);
-          transform: translateY(-8px);
-        }
-      }
-      
-      @media (max-width: 768px) {
-        .gr-page-container {
-          padding: 32px 24px;
-          width: 95%;
-        }
-      }
-      
-      .gr-page-title {
-        font-size: 32px;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin: 0 0 12px 0;
-        letter-spacing: -0.5px;
-      }
-      
-      @media (max-width: 768px) {
-        .gr-page-title {
-          font-size: 26px;
-        }
-      }
-      
-      .gr-page-subtitle {
-        font-size: 16px;
-        color: #6b7280;
-        margin: 0 0 32px 0;
-        line-height: 1.8;
-        max-width: 540px;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: left;
-      }
-      
-      .gr-page-button {
-        background: linear-gradient(135deg, ${primaryColor} 0%, ${adjustColor(primaryColor, -15)} 100%);
-        color: white;
-        border: none;
-        padding: 16px 40px;
-        font-size: 16px;
-        font-weight: 600;
-        border-radius: 12px;
-        cursor: pointer;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-      }
-      
-      .gr-page-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      }
-      
-      .gr-embed-button {
+      .gr-embed-inline-button {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         background: linear-gradient(135deg, ${primaryColor} 0%, ${adjustColor(primaryColor, -20)} 100%);
         color: white;
         border: none;
         padding: 16px 32px;
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 600;
-        border-radius: 16px;
+        border-radius: 12px;
         cursor: pointer;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
+        display: inline-block;
       }
-      .gr-embed-button::before {
+      .gr-embed-inline-button::before {
         content: '';
         position: absolute;
         top: 0;
@@ -203,12 +120,12 @@
         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
         transition: left 0.5s;
       }
-      .gr-embed-button:hover::before {
+      .gr-embed-inline-button:hover::before {
         left: 100%;
       }
-      .gr-embed-button:hover {
-        transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 12px 48px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.12);
+      .gr-embed-inline-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
       }
       .gr-embed-modal {
         display: none !important;
@@ -361,20 +278,17 @@
     document.head.appendChild(style);
   }
 
-  // Create page layout
-  function createPageLayout() {
-    // Clear body content (for standalone review pages)
-    document.body.innerHTML = '';
+  // Create inline button widget
+  function createButton() {
+    const button = document.createElement('button');
+    button.className = 'gr-embed-inline-button';
+    button.textContent = embedData.buttonText || config.branding?.buttonText || 'Leave a Review';
+    button.onclick = openModal;
     
-    const container = document.createElement('div');
-    container.className = 'gr-page-container';
-    container.innerHTML = `
-      <h1 class="gr-page-title">${embedData.pageTitle}</h1>
-      <div class="gr-page-subtitle">${embedData.pageSubtitle}</div>
-      <button class="gr-page-button" onclick="window.GoogleReviewsEmbed.openModal()">${config.branding?.buttonText || 'Leave a Review'}</button>
-    `;
-    document.body.appendChild(container);
-    logEvent('page_loaded');
+    // Insert button right after the script tag
+    embedData.scriptElement.parentNode.insertBefore(button, embedData.scriptElement.nextSibling);
+
+    logEvent('widget_loaded');
   }
 
   // Create modal with tiered flow
@@ -686,16 +600,8 @@
 
     // Inject styles and create UI
     injectStyles();
-    createPageLayout();
+    createButton();
     createModal();
-
-    // Auto-open if URL parameter is present (for QR codes)
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('openReview') === '1') {
-      setTimeout(() => {
-        window.GoogleReviewsEmbed.openModal();
-      }, 500);
-    }
   }
 
   // Initialize when DOM is ready
