@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing Page Test - Hype Insight</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <!-- Landing Page Container -->
+  <div id="hype-landing-page" 
+       data-tenant-id="tenant_demo" 
+       data-api-url="http://localhost:3000"
+       data-signup-url="https://hypeinsight.com/contact">
+  </div>
+
+  <!-- Load the landing page script -->
+  <script src="/landing-page.js"></script>
+
+  <!-- Instructions for production use -->
+  <script>
+    console.log(`
+    ===========================================
+    HYPE INSIGHT LANDING PAGE SCRIPT
+    ===========================================
+    
+    For Production Use on hypeinsight.com:
+    
+    1. Create a page at: hypeinsight.com/reviews/
+    
+    2. Add this HTML:
+    
+    <div id="hype-landing-page" 
+         data-tenant-id="tenant_xxx" 
+         data-api-url="https://your-api.com"
+         data-signup-url="https://hypeinsight.com/contact">
+    </div>
+    <script src="https://your-cdn.com/landing-page.js"><\/script>
+    
+    3. Optional attributes:
+       - data-location-id: Show specific location stats
+       - data-signup-url: Custom signup page URL
+    
+    4. The script will automatically:
+       - Generate URL slug from business name
+       - Update browser URL to /reviews/business-name
+       - Fetch and display client stats
+       - Show testimonials if available
+       - Display "Get Started" CTA
+    
+    ===========================================
+    `);
+  </script>
+</body>
+</html>

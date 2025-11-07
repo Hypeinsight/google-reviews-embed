@@ -79,6 +79,15 @@ async function getConfig(req, res) {
         }
         // Use the place_id field as the review URL (it stores the full URL)
         const googleReviewUrl = row.place_id;
+        // Generate landing page URL slug from tenant/location name
+        const displayName = row.location_name || row.tenant_name;
+        const urlSlug = displayName
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+        const landingPageUrl = mergedSettings.landingPageBaseUrl
+            ? `${mergedSettings.landingPageBaseUrl}/reviews/${urlSlug}`
+            : `https://hypeinsight.com/reviews/${urlSlug}`;
         res.status(200).json({
             success: true,
             config: {
@@ -90,6 +99,7 @@ async function getConfig(req, res) {
                 locationName: row.location_name,
                 placeId: row.place_id,
                 googleReviewUrl,
+                landingPageUrl,
                 branding: {
                     primaryColor: mergedSettings.primaryColor,
                     buttonText: mergedSettings.buttonText

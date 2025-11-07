@@ -13,6 +13,7 @@ const feedback_1 = require("./feedback");
 const db_1 = require("./db");
 const team_users_1 = require("./team-users");
 const clients_1 = require("./clients");
+const landing_page_1 = require("./landing-page");
 // Load environment variables
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -45,6 +46,7 @@ app.get('/api/config', config_1.getConfig);
 app.post('/api/log', log_1.logEvent);
 app.get('/api/feedback', feedback_1.getFeedback);
 app.post('/api/feedback', feedback_1.submitFeedback);
+app.get('/api/landing-page', landing_page_1.getLandingPageData);
 // Team user management routes
 app.get('/api/team-users', team_users_1.getTeamUsers);
 app.post('/api/team-users', team_users_1.createTeamUser);

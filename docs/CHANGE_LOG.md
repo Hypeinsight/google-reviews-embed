@@ -823,3 +823,38 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/embed-page.js
+
+---
+
+**2025-10-27T13:42:47.434Z** | Branch: `main` | Commit: `c9c9ec9`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Remove custom title/subtitle from dashboard page embed to use improved defaults
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
+
+---
+
+**2025-10-27T14:08:09.065Z** | Branch: `main` | Commit: `a13ad15`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add custom QR code generator for standalone review pages in dashboard
+
+**Files changed:**
+  - public/admin/dashboard.html
+
+---
+
+**2025-11-05T15:47:26.551Z** | Branch: `main` | Commit: `be07f2a`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix embed-page.js to clear body content before rendering + add embed-inline.js for inline button placement
+
+**Files changed:**
+  - public/embed-inline.js
+  - public/embed-page.js

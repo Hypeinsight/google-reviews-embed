@@ -620,6 +620,12 @@
         </div>
 
         <div class="form-group">
+          <label>Notification Email</label>
+          <input type="email" id="notificationEmail" placeholder="e.g., owner@example.com">
+          <small style="color: #666; font-size: 13px;">Email address to receive feedback notifications</small>
+        </div>
+
+        <div class="form-group">
           <label>Button Text</label>
           <input type="text" id="buttonText" placeholder="e.g., Leave us a review" value="Leave a Review" oninput="updateButtonPreview()" style="border-color: var(--color-gray-200);">
         </div>
@@ -975,6 +981,7 @@
       
       const clientName = document.getElementById('clientName').value;
       const siteDomain = document.getElementById('siteDomain').value;
+      const notificationEmail = document.getElementById('notificationEmail').value;
       const buttonText = document.getElementById('buttonText').value || 'Leave a Review';
       const buttonColor = document.getElementById('buttonColor').value;
       const whiteLabel = document.getElementById('whiteLabel').checked;
@@ -1003,6 +1010,7 @@
           body: JSON.stringify({
             name: clientName,
             domain: siteDomain,
+            notificationEmail,
             buttonText,
             buttonColor,
             whiteLabel,

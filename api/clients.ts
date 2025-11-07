@@ -63,7 +63,7 @@ export async function getClients(req: Request, res: Response) {
  */
 export async function createClient(req: Request, res: Response) {
   try {
-    const { name, domain, buttonText, buttonColor, whiteLabel, locations } = req.body;
+    const { name, domain, notificationEmail, buttonText, buttonColor, whiteLabel, locations } = req.body;
 
     if (!name || !domain) {
       return res.status(400).json({
@@ -76,10 +76,11 @@ export async function createClient(req: Request, res: Response) {
     const tenantId = 'tenant_' + name.toLowerCase().replace(/[^a-z0-9]/g, '_');
     const siteId = 'site_' + tenantId + '_main';
 
-    // Create tenant
+    // Create tenant with notification email in settings
+    const tenantSettings = notificationEmail ? JSON.stringify({ notificationEmail }) : null;
     await query(
-      'INSERT INTO tenants (id, name, active) VALUES ($1, $2, TRUE)',
-      [tenantId, name]
+      'INSERT INTO tenants (id, name, active, settings) VALUES ($1, $2, TRUE, $3)',
+      [tenantId, name, tenantSettings]
     );
 
     // Create site
@@ -133,12 +134,13 @@ export async function createClient(req: Request, res: Response) {
 export async function updateClient(req: Request, res: Response) {
   try {
     const { tenantId } = req.params;
-    const { name, domain, buttonText, buttonColor, whiteLabel, locations } = req.body;
+    const { name, domain, notificationEmail, buttonText, buttonColor, whiteLabel, locations } = req.body;
 
-    // Update tenant
+    // Update tenant with notification email
+    const tenantSettings = notificationEmail ? JSON.stringify({ notificationEmail }) : null;
     await query(
-      'UPDATE tenants SET name = $1 WHERE id = $2',
-      [name, tenantId]
+      'UPDATE tenants SET name = $1, settings = $2 WHERE id = $3',
+      [name, tenantSettings, tenantId]
     );
 
     // Update site

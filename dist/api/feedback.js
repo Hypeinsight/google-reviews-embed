@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFeedback = getFeedback;
 exports.submitFeedback = submitFeedback;
 const db_1 = require("./db");
+const email_1 = require("./email");
 /**
  * POST /api/feedback
  *
@@ -145,6 +146,44 @@ async function submitFeedback(req, res) {
             locationId,
             rating
         });
+        // Send email notification (async, don't wait)
+        try {
+            // Get client details for email notification
+            const clientQuery = `
+        SELECT 
+          t.name as client_name,
+          t.settings->>'notificationEmail' as notification_email,
+          l.name as location_name
+        FROM tenants t
+        JOIN locations l ON l.tenant_id = t.id
+        WHERE t.id = $1 AND l.id = $2
+      `;
+            const clientResult = await (0, db_1.query)(clientQuery, [tenantId, locationId]);
+            if (clientResult.rows.length > 0) {
+                const clientInfo = clientResult.rows[0];
+                const notificationEmail = clientInfo.notification_email;
+                if (notificationEmail) {
+                    // Send notification asynchronously (don't block response)
+                    (0, email_1.sendFeedbackNotification)({
+                        clientName: clientInfo.client_name,
+                        clientEmail: notificationEmail,
+                        locationName: clientInfo.location_name,
+                        rating: rating || 0,
+                        message: sanitisedMessage,
+                        contactEmail: contactEmail || undefined,
+                        contactPhone: contactPhone || undefined,
+                        isUrgent: req.body.isUrgent || false,
+                        feedbackDate: feedback.created_at
+                    }).catch(err => {
+                        console.error('Failed to send email notification:', err);
+                    });
+                }
+            }
+        }
+        catch (emailError) {
+            // Log but don't fail the request if email fails
+            console.error('Error preparing email notification:', emailError);
+        }
         res.status(200).json({
             success: true,
             feedbackId: feedback.id,

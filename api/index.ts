@@ -8,6 +8,7 @@ import { getFeedback, submitFeedback } from './feedback';
 import { testConnection } from './db';
 import { getTeamUsers, createTeamUser, updateTeamUser, deleteTeamUser, resetPassword } from './team-users';
 import { getClients, createClient, updateClient, deleteClient } from './clients';
+import { getLandingPageData } from './landing-page';
 
 // Load environment variables
 dotenv.config();
@@ -48,6 +49,7 @@ app.get('/api/config', getConfig);
 app.post('/api/log', logEvent);
 app.get('/api/feedback', getFeedback);
 app.post('/api/feedback', submitFeedback);
+app.get('/api/landing-page', getLandingPageData);
 
 // Team user management routes
 app.get('/api/team-users', getTeamUsers);

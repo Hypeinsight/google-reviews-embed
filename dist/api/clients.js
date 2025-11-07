@@ -17,11 +17,11 @@ async function getClients(req, res) {
         t.name as client_name,
         t.active,
         t.created_at,
-        (
-          SELECT COUNT(*)
+        COALESCE((
+          SELECT COUNT(*)::INTEGER
           FROM feedback f
           WHERE f.tenant_id = t.id
-        ) as feedbackCount,
+        ), 0) as feedbackCount,
         json_agg(
           json_build_object(
             'site_id', s.id,
@@ -66,7 +66,7 @@ async function getClients(req, res) {
  */
 async function createClient(req, res) {
     try {
-        const { name, domain, buttonText, buttonColor, whiteLabel, locations } = req.body;
+        const { name, domain, notificationEmail, buttonText, buttonColor, whiteLabel, locations } = req.body;
         if (!name || !domain) {
             return res.status(400).json({
                 success: false,
@@ -76,8 +76,9 @@ async function createClient(req, res) {
         // Generate IDs
         const tenantId = 'tenant_' + name.toLowerCase().replace(/[^a-z0-9]/g, '_');
         const siteId = 'site_' + tenantId + '_main';
-        // Create tenant
-        await (0, db_1.query)('INSERT INTO tenants (id, name, active) VALUES ($1, $2, TRUE)', [tenantId, name]);
+        // Create tenant with notification email in settings
+        const tenantSettings = notificationEmail ? JSON.stringify({ notificationEmail }) : null;
+        await (0, db_1.query)('INSERT INTO tenants (id, name, active, settings) VALUES ($1, $2, TRUE, $3)', [tenantId, name, tenantSettings]);
         // Create site
         await (0, db_1.query)(`INSERT INTO sites (id, tenant_id, domain, settings) 
        VALUES ($1, $2, $3, $4)`, [
@@ -118,9 +119,10 @@ async function createClient(req, res) {
 async function updateClient(req, res) {
     try {
         const { tenantId } = req.params;
-        const { name, domain, buttonText, buttonColor, whiteLabel, locations } = req.body;
-        // Update tenant
-        await (0, db_1.query)('UPDATE tenants SET name = $1 WHERE id = $2', [name, tenantId]);
+        const { name, domain, notificationEmail, buttonText, buttonColor, whiteLabel, locations } = req.body;
+        // Update tenant with notification email
+        const tenantSettings = notificationEmail ? JSON.stringify({ notificationEmail }) : null;
+        await (0, db_1.query)('UPDATE tenants SET name = $1, settings = $2 WHERE id = $3', [name, tenantSettings, tenantId]);
         // Update site
         const siteResult = await (0, db_1.query)('SELECT id FROM sites WHERE tenant_id = $1 LIMIT 1', [tenantId]);
         if (siteResult.rows.length > 0) {
