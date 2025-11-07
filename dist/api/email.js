@@ -83,13 +83,6 @@ async function sendFeedbackNotification(data) {
               <p style="margin: 4px 0;"><strong>Client:</strong> ${data.clientName}</p>
             </div>
 
-            <!-- Action Button -->
-            <div style="text-align: center; margin-top: 32px;">
-              <a href="https://reviews.hypeawareness.com/admin/dashboard.html" 
-                 style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600;">
-                View in Dashboard
-              </a>
-            </div>
 
             <!-- Footer -->
             <div style="text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb; color: #999; font-size: 12px;">

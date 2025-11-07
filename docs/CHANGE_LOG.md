@@ -903,3 +903,17 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - dist/api/index.js
   - docs/CHANGE_LOG.md
   - docs/TECH_STACK.md
+
+---
+
+**2025-11-07T17:06:19.615Z** | Branch: `main` | Commit: `12f4531`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix urgent checkbox label visibility by using primary button color
+
+**Files changed:**
+  - api/email.ts
+  - dist/api/email.js
+  - docs/CHANGE_LOG.md
+  - public/embed.js
