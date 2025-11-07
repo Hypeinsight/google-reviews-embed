@@ -14,6 +14,7 @@ const db_1 = require("./db");
 const team_users_1 = require("./team-users");
 const clients_1 = require("./clients");
 const landing_page_1 = require("./landing-page");
+const email_1 = require("./email");
 // Load environment variables
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -58,6 +59,47 @@ app.get('/api/clients', clients_1.getClients);
 app.post('/api/clients', clients_1.createClient);
 app.put('/api/clients/:tenantId', clients_1.updateClient);
 app.delete('/api/clients/:tenantId', clients_1.deleteClient);
+// Email test endpoint
+app.post('/api/test-email', async (req, res) => {
+    try {
+        const { email, type } = req.body;
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                error: 'Email address is required'
+            });
+        }
+        if (type === 'feedback') {
+            // Send a test feedback notification
+            await (0, email_1.sendFeedbackNotification)({
+                clientName: 'Test Client',
+                clientEmail: email,
+                locationName: 'Test Location',
+                rating: 5,
+                message: 'This is a test feedback message to verify the email notification system is working correctly.',
+                contactEmail: 'customer@example.com',
+                contactPhone: '+1 (555) 123-4567',
+                isUrgent: false,
+                feedbackDate: new Date()
+            });
+        }
+        else {
+            // Send basic test email
+            await (0, email_1.sendTestEmail)(email);
+        }
+        res.json({
+            success: true,
+            message: `Test email sent to ${email}`
+        });
+    }
+    catch (error) {
+        console.error('Test email failed:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message || 'Failed to send test email'
+        });
+    }
+});
 // Root endpoint - redirect to admin
 app.get('/', (req, res) => {
     res.redirect('/admin/');

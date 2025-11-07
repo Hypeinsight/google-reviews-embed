@@ -11,6 +11,7 @@
 <!-- AUTO-GENERATED: Do not edit this section manually -->
 | Package | Version |
 |---------|---------|
+| @sendgrid/mail | ^8.1.6 |
 | @types/cors | ^2.8.19 |
 | @types/express | ^4.17.21 |
 | @types/node | ^20.10.0 |
@@ -56,3 +57,4 @@
 <!-- Dependency change notes will be appended here -->
 - **2025-10-26**: Added: body-parser, cors, dotenv, pg, @types/cors, @types/pg
 - **2025-10-26**: Added: qrcode
+- **2025-11-07**: Added: @sendgrid/mail

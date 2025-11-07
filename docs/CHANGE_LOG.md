@@ -858,3 +858,34 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - public/embed-inline.js
   - public/embed-page.js
+
+---
+
+**2025-11-07T15:27:11.605Z** | Branch: `main` | Commit: `82c6b3c`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add SendGrid email notifications for client feedback
+
+**Files changed:**
+  - .env.example
+  - LANDING_PAGE_SUMMARY.md
+  - WARP.md
+  - api/clients.ts
+  - api/config.ts
+  - api/email.ts
+  - api/feedback.ts
+  - api/index.ts
+  - api/landing-page.ts
+  - dist/api/clients.js
+  - dist/api/config.js
+  - dist/api/email.js
+  - dist/api/feedback.js
+  - dist/api/index.js
+  - dist/api/landing-page.js
+  - docs/CHANGE_LOG.md
+  - docs/LANDING_PAGE.md
+  - package.json
+  - public/admin/dashboard.html
+  - public/landing-page.js
+  - public/test-landing-page.html

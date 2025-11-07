@@ -9,6 +9,7 @@ import { testConnection } from './db';
 import { getTeamUsers, createTeamUser, updateTeamUser, deleteTeamUser, resetPassword } from './team-users';
 import { getClients, createClient, updateClient, deleteClient } from './clients';
 import { getLandingPageData } from './landing-page';
+import { sendTestEmail, sendFeedbackNotification } from './email';
 
 // Load environment variables
 dotenv.config();
@@ -63,6 +64,49 @@ app.get('/api/clients', getClients);
 app.post('/api/clients', createClient);
 app.put('/api/clients/:tenantId', updateClient);
 app.delete('/api/clients/:tenantId', deleteClient);
+
+// Email test endpoint
+app.post('/api/test-email', async (req: Request, res: Response) => {
+  try {
+    const { email, type } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email address is required'
+      });
+    }
+
+    if (type === 'feedback') {
+      // Send a test feedback notification
+      await sendFeedbackNotification({
+        clientName: 'Test Client',
+        clientEmail: email,
+        locationName: 'Test Location',
+        rating: 5,
+        message: 'This is a test feedback message to verify the email notification system is working correctly.',
+        contactEmail: 'customer@example.com',
+        contactPhone: '+1 (555) 123-4567',
+        isUrgent: false,
+        feedbackDate: new Date()
+      });
+    } else {
+      // Send basic test email
+      await sendTestEmail(email);
+    }
+
+    res.json({
+      success: true,
+      message: `Test email sent to ${email}`
+    });
+  } catch (error: any) {
+    console.error('Test email failed:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to send test email'
+    });
+  }
+});
 
 // Root endpoint - redirect to admin
 app.get('/', (req: Request, res: Response) => {
