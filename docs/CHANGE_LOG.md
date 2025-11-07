@@ -889,3 +889,17 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - public/admin/dashboard.html
   - public/landing-page.js
   - public/test-landing-page.html
+
+---
+
+**2025-11-07T15:28:36.097Z** | Branch: `main` | Commit: `60e92a4`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add test email endpoint for testing SendGrid notifications
+
+**Files changed:**
+  - api/index.ts
+  - dist/api/index.js
+  - docs/CHANGE_LOG.md
+  - docs/TECH_STACK.md

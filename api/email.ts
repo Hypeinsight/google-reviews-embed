@@ -140,7 +140,10 @@ Hype Insight Reviews - Automated Notification
     return true;
 
   } catch (error: any) {
-    console.error('❌ Failed to send email notification:', error.response?.body || error.message);
+    console.error('❌ Failed to send email notification:');
+    console.error('Error code:', error.code);
+    console.error('Error message:', error.message);
+    console.error('Response body:', JSON.stringify(error.response?.body, null, 2));
     return false;
   }
 }

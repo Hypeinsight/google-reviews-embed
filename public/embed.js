@@ -294,6 +294,7 @@
 
   // Create modal with tiered flow
   function createModal() {
+    const primaryColor = config.branding?.primaryColor || '#4285F4';
     const modal = document.createElement('div');
     modal.className = 'gr-embed-modal';
     modal.id = 'gr-embed-modal';
@@ -358,9 +359,9 @@
             </div>
 
             <div class="gr-embed-form-group">
-              <label style="display: flex; align-items: center; font-weight: normal; cursor: pointer;">
+              <label style="display: flex; align-items: center; font-weight: normal; cursor: pointer; color: #333;">
                 <input type="checkbox" class="gr-embed-checkbox" id="gr-feedback-urgent" />
-                <span>This is urgent and needs immediate attention</span>
+                <span style="color: ${primaryColor}; font-weight: 500;">This is urgent and needs immediate attention</span>
               </label>
             </div>
             
