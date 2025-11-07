@@ -157,30 +157,68 @@ export async function updateClient(req: Request, res: Response) {
       );
     }
 
-    // Update locations (delete old, insert new)
-    await query('DELETE FROM locations WHERE tenant_id = $1', [tenantId]);
+    // Update locations (preserve existing to keep feedback history)
+    // Get existing locations
+    const existingLocations = await query(
+      'SELECT id, place_id, name FROM locations WHERE tenant_id = $1 ORDER BY id',
+      [tenantId]
+    );
     
     if (locations && Array.isArray(locations)) {
+      // Update existing locations or create new ones
       for (let i = 0; i < locations.length; i++) {
         const loc = locations[i];
         if (loc.name && loc.placeId) {
           const locationId = `loc_${tenantId}_${i}`;
-          await query(
-            'INSERT INTO locations (id, tenant_id, place_id, name, active) VALUES ($1, $2, $3, $4, TRUE)',
-            [locationId, tenantId, loc.placeId, loc.name]
-          );
-          // Link location to site
-          const siteResult = await query(
-            'SELECT id FROM sites WHERE tenant_id = $1 LIMIT 1',
-            [tenantId]
-          );
-          if (siteResult.rows.length > 0) {
+          
+          // Check if this location already exists
+          const existingLoc = existingLocations.rows.find(l => l.id === locationId);
+          
+          if (existingLoc) {
+            // Update existing location (preserves feedback)
             await query(
-              'INSERT INTO site_locations (site_id, location_id) VALUES ($1, $2)',
-              [siteResult.rows[0].id, locationId]
+              'UPDATE locations SET place_id = $1, name = $2 WHERE id = $3',
+              [loc.placeId, loc.name, locationId]
             );
+          } else {
+            // Create new location
+            await query(
+              'INSERT INTO locations (id, tenant_id, place_id, name, active) VALUES ($1, $2, $3, $4, TRUE)',
+              [locationId, tenantId, loc.placeId, loc.name]
+            );
+            // Link location to site
+            const siteResult = await query(
+              'SELECT id FROM sites WHERE tenant_id = $1 LIMIT 1',
+              [tenantId]
+            );
+            if (siteResult.rows.length > 0) {
+              // Check if link already exists
+              const linkExists = await query(
+                'SELECT 1 FROM site_locations WHERE site_id = $1 AND location_id = $2',
+                [siteResult.rows[0].id, locationId]
+              );
+              if (linkExists.rows.length === 0) {
+                await query(
+                  'INSERT INTO site_locations (site_id, location_id) VALUES ($1, $2)',
+                  [siteResult.rows[0].id, locationId]
+                );
+              }
+            }
           }
         }
+      }
+      
+      // Mark locations that were removed as inactive (instead of deleting)
+      const newLocationIds = locations.map((_, i) => `loc_${tenantId}_${i}`);
+      const locationsToDeactivate = existingLocations.rows.filter(
+        loc => !newLocationIds.includes(loc.id)
+      );
+      
+      for (const loc of locationsToDeactivate) {
+        await query(
+          'UPDATE locations SET active = FALSE WHERE id = $1',
+          [loc.id]
+        );
       }
     }
 

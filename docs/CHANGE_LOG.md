@@ -917,3 +917,16 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - dist/api/email.js
   - docs/CHANGE_LOG.md
   - public/embed.js
+
+---
+
+**2025-11-07T17:08:07.616Z** | Branch: `main` | Commit: `b133c4b`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Remove dashboard button from client notification emails
+
+**Files changed:**
+  - api/email.ts
+  - dist/api/email.js
+  - docs/CHANGE_LOG.md
