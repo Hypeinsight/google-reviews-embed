@@ -943,3 +943,21 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - api/clients.ts
   - dist/api/clients.js
   - docs/CHANGE_LOG.md
+
+---
+
+**2025-11-11T13:42:22.836Z** | Branch: `main` | Commit: `0ab64cb`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix 5-star email notifications and update domain to reviewmanagement.hypeinsight.com
+
+**Files changed:**
+  - BRAND_GUIDELINES.md
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html
+  - public/embed-enhanced.js
+  - public/embed-inline.js
+  - public/embed-page.js
+  - public/embed.js
+  - public/test-inline.html

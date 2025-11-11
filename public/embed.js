@@ -424,11 +424,25 @@
     });
   }
 
-  function handleRatingSelected(rating) {
+  async function handleRatingSelected(rating) {
     logEvent('rating_selected', { rating });
 
     // Hide rating view
     document.getElementById('gr-rating-view').classList.remove('active');
+
+    // If 5 stars, immediately log to trigger email notification
+    if (rating === 5) {
+      await apiCall('/api/feedback', 'POST', {
+        tenantId: embedData.tenantId,
+        siteId: embedData.siteId,
+        locationId: embedData.locationId,
+        rating: 5,
+        message: '[5-star review - redirected to Google]',
+        contactEmail: null,
+        contactPhone: null,
+        sessionId
+      });
+    }
 
     // Show appropriate view based on rating
     setTimeout(() => {
@@ -550,19 +564,8 @@
     redirectToGoogle: async function() {
       logEvent('google_redirect', { rating: selectedRating });
       
-      // Log 5-star users for tracking (non-invasive)
-      if (selectedRating === 5) {
-        await apiCall('/api/feedback', 'POST', {
-          tenantId: embedData.tenantId,
-          siteId: embedData.siteId,
-          locationId: embedData.locationId,
-          rating: 5,
-          message: '[5-star review - redirected to Google]',
-          contactEmail: null,
-          contactPhone: null,
-          sessionId
-        });
-      }
+      // Note: 5-star feedback already logged when star was clicked
+      // No need to log again here
       
       window.open(config.googleReviewUrl, '_blank');
       setTimeout(() => {
