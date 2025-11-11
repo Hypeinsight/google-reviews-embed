@@ -961,3 +961,18 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - public/embed-page.js
   - public/embed.js
   - public/test-inline.html
+
+---
+
+**2025-11-11T13:50:50.710Z** | Branch: `main` | Commit: `8c6dd5a`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Send 5-star email notification immediately when 5th star is clicked
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/embed-enhanced.js
+  - public/embed-inline.js
+  - public/embed-page.js
+  - public/embed.js

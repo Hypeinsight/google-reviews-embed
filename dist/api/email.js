@@ -17,6 +17,17 @@ else {
     console.warn('⚠️  SendGrid API key not found. Email notifications will not be sent.');
 }
 /**
+ * Adjust color brightness
+ */
+function adjustBrightness(color, percent) {
+    const num = parseInt(color.replace('#', ''), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = Math.max(0, Math.min(255, (num >> 16) + amt));
+    const G = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
+    const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+    return '#' + ((1 << 24) + (R << 16) + (G << 8) + B).toString(16).slice(1);
+}
+/**
  * Send email notification when feedback is received
  */
 async function sendFeedbackNotification(data) {
@@ -64,7 +75,7 @@ async function sendFeedbackNotification(data) {
             ${urgentBadge}
 
             <!-- Rating -->
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 24px; border-radius: 8px; text-align: center; color: white; margin-bottom: 24px;">
+            <div style="background: linear-gradient(135deg, ${data.brandColor || '#667eea'} 0%, ${adjustBrightness(data.brandColor || '#667eea', -20)} 100%); padding: 24px; border-radius: 8px; text-align: center; color: white; margin-bottom: 24px;">
               <div style="font-size: 48px; margin-bottom: 8px;">${ratingStars}</div>
               <div style="font-size: 18px; font-weight: 600;">${data.rating} out of 5 stars</div>
             </div>

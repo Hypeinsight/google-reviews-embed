@@ -153,12 +153,14 @@ async function submitFeedback(req, res) {
         SELECT 
           t.name as client_name,
           t.settings->>'notificationEmail' as notification_email,
+          s.settings->>'buttonColor' as button_color,
           l.name as location_name
         FROM tenants t
         JOIN locations l ON l.tenant_id = t.id
-        WHERE t.id = $1 AND l.id = $2
+        JOIN sites s ON s.tenant_id = t.id
+        WHERE t.id = $1 AND l.id = $2 AND s.id = $3
       `;
-            const clientResult = await (0, db_1.query)(clientQuery, [tenantId, locationId]);
+            const clientResult = await (0, db_1.query)(clientQuery, [tenantId, locationId, siteId]);
             if (clientResult.rows.length > 0) {
                 const clientInfo = clientResult.rows[0];
                 const notificationEmail = clientInfo.notification_email;
@@ -173,7 +175,8 @@ async function submitFeedback(req, res) {
                         contactEmail: contactEmail || undefined,
                         contactPhone: contactPhone || undefined,
                         isUrgent: req.body.isUrgent || false,
-                        feedbackDate: feedback.created_at
+                        feedbackDate: feedback.created_at,
+                        brandColor: clientInfo.button_color || '#667eea'
                     }).catch(err => {
                         console.error('Failed to send email notification:', err);
                     });
