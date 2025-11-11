@@ -930,3 +930,16 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - api/email.ts
   - dist/api/email.js
   - docs/CHANGE_LOG.md
+
+---
+
+**2025-11-07T17:48:33.628Z** | Branch: `main` | Commit: `1558407`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** CRITICAL FIX: Preserve feedback history when updating client locations
+
+**Files changed:**
+  - api/clients.ts
+  - dist/api/clients.js
+  - docs/CHANGE_LOG.md

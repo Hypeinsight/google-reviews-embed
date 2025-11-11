@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inline Embed Test - Google Reviews</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+    }
+    .button-container {
+      text-align: center;
+      margin: 40px 0;
+      padding: 30px;
+      background: #f9f9f9;
+      border-radius: 8px;
+    }
+    .debug-info {
+      margin-top: 40px;
+      padding: 20px;
+      background: #f0f0f0;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    .debug-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    #debug-output {
+      white-space: pre-wrap;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌟 Inline Embed Test Page</h1>
+    <p class="subtitle">Testing embed-inline.js with existing page headers/footers</p>
+    
+    <p>This page tests the inline embed script. The button should appear centered below, keeping the page header and footer intact.</p>
+    
+    <div class="button-container">
+      <p style="color: #666; margin-bottom: 20px;">The review button will appear here:</p>
+      
+      <!-- Inline Embed Script - UPDATE THESE IDs -->
+      <script src="/embed/embed-inline.js" 
+              data-tenant-id="tenant_demo" 
+              data-site-id="site_demo_main" 
+              data-location-id="loc_demo_hq" 
+              data-button-text="Leave a Review" 
+              data-button-color="#4285F4" 
+              data-white-label="false" 
+              data-api-url="http://localhost:3000">
+      </script>
+    </div>
+    
+    <p>If the button doesn't appear, check the debug information below and the browser console.</p>
+    
+    <div class="debug-info">
+      <div class="debug-title">Debug Information:</div>
+      <div id="debug-output">Loading...</div>
+    </div>
+  </div>
+
+  <script>
+    // Debug helper
+    setTimeout(() => {
+      const debugOutput = document.getElementById('debug-output');
+      const scripts = Array.from(document.getElementsByTagName('script'));
+      const embedScript = scripts.find(s => s.src && s.src.includes('embed-inline'));
+      
+      let debugInfo = 'Script Status:\n';
+      debugInfo += embedScript ? '✅ Script tag found\n\n' : '❌ Script tag not found\n\n';
+      
+      if (embedScript) {
+        debugInfo += 'Script Attributes:\n';
+        debugInfo += `  tenant-id: ${embedScript.getAttribute('data-tenant-id')}\n`;
+        debugInfo += `  site-id: ${embedScript.getAttribute('data-site-id')}\n`;
+        debugInfo += `  location-id: ${embedScript.getAttribute('data-location-id')}\n`;
+        debugInfo += `  api-url: ${embedScript.getAttribute('data-api-url')}\n\n`;
+      }
+      
+      debugInfo += 'API Check:\n';
+      const apiUrl = embedScript ? embedScript.getAttribute('data-api-url') : 'http://localhost:3000';
+      const tenantId = embedScript ? embedScript.getAttribute('data-tenant-id') : 'unknown';
+      const siteId = embedScript ? embedScript.getAttribute('data-site-id') : 'unknown';
+      const locationId = embedScript ? embedScript.getAttribute('data-location-id') : 'unknown';
+      
+      const configUrl = `${apiUrl}/api/config?tenantId=${tenantId}&siteId=${siteId}&locationId=${locationId}`;
+      debugInfo += `  Testing: ${configUrl}\n\n`;
+      
+      // Test API
+      fetch(configUrl)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            debugInfo += 'API Response: ✅ SUCCESS\n';
+            debugInfo += `  Location: ${data.config.locationName}\n`;
+            debugInfo += `  Google URL: ${data.config.googleReviewUrl}\n`;
+          } else {
+            debugInfo += 'API Response: ❌ FAILED\n';
+            debugInfo += `  Error: ${data.error}\n`;
+          }
+          debugOutput.textContent = debugInfo;
+        })
+        .catch(error => {
+          debugInfo += 'API Response: ❌ ERROR\n';
+          debugInfo += `  ${error.message}\n`;
+          debugOutput.textContent = debugInfo;
+        });
+    }, 1000);
+  </script>
+</body>
+</html>

@@ -631,12 +631,12 @@
       logEvent('widget_closed');
     },
 
-    redirectToGoogle: function() {
+    redirectToGoogle: async function() {
       logEvent('google_redirect', { rating: selectedRating });
       
       // Log 5-star users for tracking (non-invasive)
       if (selectedRating === 5) {
-        apiCall('/api/feedback', 'POST', {
+        await apiCall('/api/feedback', 'POST', {
           tenantId: embedData.tenantId,
           siteId: embedData.siteId,
           locationId: embedData.locationId,
