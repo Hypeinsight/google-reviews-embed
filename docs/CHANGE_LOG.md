@@ -976,3 +976,18 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - public/embed-inline.js
   - public/embed-page.js
   - public/embed.js
+
+---
+
+**2025-11-11T13:57:06.008Z** | Branch: `main` | Commit: `8379629`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Use client brand color in email notification banner
+
+**Files changed:**
+  - api/email.ts
+  - api/feedback.ts
+  - dist/api/email.js
+  - dist/api/feedback.js
+  - docs/CHANGE_LOG.md

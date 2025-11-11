@@ -36,6 +36,15 @@ async function sendFeedbackNotification(data) {
         return false;
     }
     try {
+        // Parse multiple email addresses (comma or semicolon separated)
+        const emailAddresses = data.clientEmail
+            .split(/[,;]/)
+            .map(email => email.trim())
+            .filter(email => email.length > 0);
+        if (emailAddresses.length === 0) {
+            console.log('⚠️  No valid email addresses provided');
+            return false;
+        }
         const ratingStars = '★'.repeat(data.rating) + '☆'.repeat(5 - data.rating);
         const urgentBadge = data.isUrgent ? '<span style="background: #ff4444; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 16px;">🚨 URGENT</span>' : '';
         const contactInfo = data.contactEmail || data.contactPhone
@@ -48,7 +57,7 @@ async function sendFeedbackNotification(data) {
       `
             : '';
         const msg = {
-            to: data.clientEmail,
+            to: emailAddresses,
             from: {
                 email: FROM_EMAIL,
                 name: FROM_NAME
@@ -129,7 +138,7 @@ Hype Insight Reviews - Automated Notification
       `.trim()
         };
         await mail_1.default.send(msg);
-        console.log(`✅ Email notification sent to ${data.clientEmail}`);
+        console.log(`✅ Email notification sent to ${emailAddresses.length} recipient(s): ${emailAddresses.join(', ')}`);
         return true;
     }
     catch (error) {
