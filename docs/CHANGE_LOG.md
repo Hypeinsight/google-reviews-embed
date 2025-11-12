@@ -1044,3 +1044,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - public/embed-inline.js
   - public/embed-page.js
   - public/embed.js
+
+---
+
+**2025-11-12T08:29:43.803Z** | Branch: `main` | Commit: `4a99126`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Update admin login email to reviewmanagement@hypeinsight.com
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/admin/index.html

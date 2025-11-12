@@ -371,25 +371,25 @@
     container.innerHTML = `
       <h1 class="gr-page-title">${embedData.pageTitle || "We'd Love to Hear What You Think!"}</h1>
       <div class="gr-page-subtitle">
-        <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 16px; color: #333; text-align: left;">
+        <p style="font-size: 16px; line-height: 1.6; margin-bottom: 16px; color: #333; text-align: left;">
           Your feedback is incredibly important to us. As a valued customer, your experience helps us understand what we're doing well and where we can improve. By sharing your thoughts, you're not just leaving a review – you're helping us build a better experience for you and the entire community.
         </p>
         
-        <h3 style="font-size: 1.5rem; font-weight: 600; margin: 30px 0 16px; color: #1a1a1a;">
+        <h3 style="font-size: 20px; font-weight: 600; margin: 30px 0 16px; color: #1a1a1a;">
           Why Your Feedback Matters
         </h3>
         
-        <ul style="list-style: disc; padding-left: 30px; margin-bottom: 24px; text-align: left;">
+        <ul style="list-style: disc; padding-left: 30px; margin-bottom: 24px; text-align: left; font-size: 16px;">
           <li style="margin-bottom: 12px; color: #333;"><strong>It Helps Us Improve:</strong> Honest feedback is the most powerful tool we have. It guides our decisions and allows us to focus on what truly matters to you.</li>
           <li style="margin-bottom: 12px; color: #333;"><strong>It Helps Others:</strong> Your experience provides valuable insight for other customers, helping them make informed choices.</li>
           <li style="margin-bottom: 12px; color: #333;"><strong>It Strengthens Our Community:</strong> Every review contributes to a transparent and trustworthy environment for everyone.</li>
         </ul>
         
-        <p style="margin-top: 20px; color: #333; text-align: left;">
+        <p style="margin-top: 20px; color: #333; text-align: left; font-size: 16px;">
           We would be so grateful if you could take a few moments to share your experience with us. Whether it's a suggestion, a compliment, or a critique, we're ready to listen.
         </p>
         
-        <p style="margin-top: 12px; font-weight: 500; color: #333; text-align: left;">
+        <p style="margin-top: 12px; font-weight: 500; color: #333; text-align: left; font-size: 16px;">
           Thank you for your time and for being a part of our journey.
         </p>
       </div>
