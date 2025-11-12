@@ -1005,3 +1005,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - dist/api/email.js
   - docs/CHANGE_LOG.md
   - public/admin/dashboard.html
+
+---
+
+**2025-11-12T08:02:16.969Z** | Branch: `main` | Commit: `9d22337`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add universal content text to embed-inline.js
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/embed-inline.js
