@@ -991,3 +991,17 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - dist/api/email.js
   - dist/api/feedback.js
   - docs/CHANGE_LOG.md
+
+---
+
+**2025-11-11T14:01:14.710Z** | Branch: `main` | Commit: `31245a5`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Support multiple email recipients for feedback notifications
+
+**Files changed:**
+  - api/email.ts
+  - dist/api/email.js
+  - docs/CHANGE_LOG.md
+  - public/admin/dashboard.html

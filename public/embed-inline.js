@@ -278,15 +278,53 @@
     document.head.appendChild(style);
   }
 
-  // Create inline button widget
+  // Create inline button widget with content
   function createButton() {
+    // Create container
+    const container = document.createElement('div');
+    container.style.cssText = 'max-width: 800px; margin: 0 auto; padding: 40px 20px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;';
+    
+    container.innerHTML = `
+      <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 24px; color: #1a1a1a; line-height: 1.2;">
+        We'd Love to Hear What You Think!
+      </h2>
+      
+      <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 16px; color: #333; text-align: left;">
+        Your feedback is incredibly important to us. As a valued customer, your experience helps us understand what we're doing well and where we can improve. By sharing your thoughts, you're not just leaving a review – you're helping us build a better experience for you and the entire community.
+      </p>
+      
+      <h3 style="font-size: 1.5rem; font-weight: 600; margin: 30px 0 16px; color: #1a1a1a;">
+        Why Your Feedback Matters
+      </h3>
+      
+      <ul style="list-style: disc; padding-left: 30px; margin-bottom: 24px; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+        <li style="margin-bottom: 12px; color: #333;"><strong>It Helps Us Improve:</strong> Honest feedback is the most powerful tool we have. It guides our decisions and allows us to focus on what truly matters to you.</li>
+        <li style="margin-bottom: 12px; color: #333;"><strong>It Helps Others:</strong> Your experience provides valuable insight for other customers, helping them make informed choices.</li>
+        <li style="margin-bottom: 12px; color: #333;"><strong>It Strengthens Our Community:</strong> Every review contributes to a transparent and trustworthy environment for everyone.</li>
+      </ul>
+      
+      <p style="margin-top: 20px; color: #333; text-align: left;">
+        We would be so grateful if you could take a few moments to share your experience with us. Whether it's a suggestion, a compliment, or a critique, we're ready to listen.
+      </p>
+      
+      <p style="margin-top: 12px; font-weight: 500; color: #333; text-align: left;">
+        Thank you for your time and for being a part of our journey.
+      </p>
+      
+      <div style="margin-top: 40px;"></div>
+    `;
+    
+    // Create button
     const button = document.createElement('button');
     button.className = 'gr-embed-inline-button';
     button.textContent = embedData.buttonText || config.branding?.buttonText || 'Leave a Review';
     button.onclick = openModal;
     
-    // Insert button right after the script tag
-    embedData.scriptElement.parentNode.insertBefore(button, embedData.scriptElement.nextSibling);
+    // Append button to container
+    container.querySelector('div').appendChild(button);
+    
+    // Insert container right after the script tag
+    embedData.scriptElement.parentNode.insertBefore(container, embedData.scriptElement.nextSibling);
 
     logEvent('widget_loaded');
   }
