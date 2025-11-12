@@ -1017,3 +1017,15 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/embed-inline.js
+
+---
+
+**2025-11-12T08:18:17.434Z** | Branch: `main` | Commit: `492aa98`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add universal content text to embed-page.js
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/embed-page.js

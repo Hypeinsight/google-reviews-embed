@@ -536,8 +536,12 @@
     // Hide rating view
     document.getElementById('gr-rating-view').classList.remove('active');
 
-    // If 5 stars, immediately log to trigger email notification
+    // If 5 stars, log and redirect immediately
     if (rating === 5) {
+      // Show thank you message briefly
+      document.getElementById('gr-5star-view').classList.add('active');
+      
+      // Log feedback
       await apiCall('/api/feedback', 'POST', {
         tenantId: embedData.tenantId,
         siteId: embedData.siteId,
@@ -548,14 +552,18 @@
         contactPhone: null,
         sessionId
       });
+      
+      // Auto-redirect to Google after 1 second
+      setTimeout(() => {
+        window.GoogleReviewsEmbed.redirectToGoogle();
+      }, 1000);
+      
+      return;
     }
 
-    // Show appropriate view based on rating
+    // Show appropriate view for other ratings
     setTimeout(() => {
-      if (rating === 5) {
-        // 5 stars - direct to Google
-        document.getElementById('gr-5star-view').classList.add('active');
-      } else if (rating === 4) {
+      if (rating === 4) {
         // 4 stars - ask for improvements
         document.getElementById('gr-4star-view').classList.add('active');
       } else {
