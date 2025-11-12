@@ -1029,3 +1029,18 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/embed-page.js
+
+---
+
+**2025-11-12T08:20:03.288Z** | Branch: `main` | Commit: `55083e8`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Auto-redirect to Google review page when 5 stars selected
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/embed-enhanced.js
+  - public/embed-inline.js
+  - public/embed-page.js
+  - public/embed.js
