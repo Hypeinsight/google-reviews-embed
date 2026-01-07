@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import cookieParser from 'cookie-parser';
 import { getConfig } from './config';
 import { logEvent } from './log';
 import { getFeedback, submitFeedback } from './feedback';
@@ -11,6 +12,22 @@ import { getClients, createClient, updateClient, deleteClient } from './clients'
 import { getLandingPageData } from './landing-page';
 import { sendTestEmail, sendFeedbackNotification } from './email';
 
+// Auth imports
+import { login, logout, getCurrentUser } from './auth/login';
+import { authenticateToken } from './auth/middleware';
+
+// Billing imports
+import { createCheckoutSession, createPortalSession, getSubscription, cancelSubscription } from './billing/subscriptions';
+import { handleWebhook } from './billing/webhooks';
+import { getPricingTiers, getInvoices } from './billing/pricing';
+import { getUsage } from './billing/usage';
+
+// Client dashboard imports
+import { getDashboardStats, getLocations, getSettings, updateSettings } from './client/dashboard';
+
+// Admin migration (TEMPORARY - remove after migration)
+import { runMigration } from './admin/migrate';
+
 // Load environment variables
 dotenv.config();
 
@@ -18,6 +35,12 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+app.use(cookieParser());
+
+// Webhook route needs raw body for signature verification
+app.post('/api/billing/webhook', express.raw({ type: 'application/json' }), handleWebhook);
+
+// All other routes use JSON parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -45,12 +68,37 @@ app.get('/health', async (req: Request, res: Response) => {
   });
 });
 
-// API routes
+// API routes (public)
 app.get('/api/config', getConfig);
 app.post('/api/log', logEvent);
-app.get('/api/feedback', getFeedback);
-app.post('/api/feedback', submitFeedback);
+app.post('/api/feedback', submitFeedback); // Public for embed
 app.get('/api/landing-page', getLandingPageData);
+
+// Auth routes
+app.post('/api/auth/login', login);
+app.post('/api/auth/logout', logout);
+app.get('/api/auth/me', authenticateToken, getCurrentUser);
+
+// Billing routes (public)
+app.get('/api/billing/pricing', getPricingTiers);
+
+// Billing routes (authenticated)
+app.post('/api/billing/create-checkout', authenticateToken, createCheckoutSession);
+app.post('/api/billing/create-portal', authenticateToken, createPortalSession);
+app.get('/api/billing/subscription', authenticateToken, getSubscription);
+app.post('/api/billing/cancel-subscription', authenticateToken, cancelSubscription);
+app.get('/api/billing/usage', authenticateToken, getUsage);
+app.get('/api/billing/invoices', authenticateToken, getInvoices);
+
+// Client dashboard routes (authenticated)
+app.get('/api/feedback', authenticateToken, getFeedback); // Need auth for dashboard viewing
+app.get('/api/client/dashboard', authenticateToken, getDashboardStats);
+app.get('/api/client/locations', authenticateToken, getLocations);
+app.get('/api/client/settings', authenticateToken, getSettings);
+app.put('/api/client/settings', authenticateToken, updateSettings);
+
+// TEMPORARY: Migration endpoint (remove after running once)
+app.post('/api/admin/migrate', runMigration);
 
 // Team user management routes
 app.get('/api/team-users', getTeamUsers);

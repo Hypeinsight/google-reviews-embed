@@ -1056,3 +1056,16 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 **Files changed:**
   - docs/CHANGE_LOG.md
   - public/admin/index.html
+
+---
+
+**2025-11-12T16:08:06.943Z** | Branch: `main` | Commit: `9deef24`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix font sizes - use pixels instead of rem for consistency
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - public/embed-inline.js
+  - public/embed-page.js

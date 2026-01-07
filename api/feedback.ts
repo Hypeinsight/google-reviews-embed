@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { query } from './db';
 import { sendFeedbackNotification } from './email';
+import { incrementUsage, checkUsageLimit } from './billing/usage';
 
 /**
  * POST /api/feedback
@@ -109,6 +110,17 @@ export async function submitFeedback(req: Request, res: Response): Promise<void>
       return;
     }
 
+    // Check usage limits
+    const limitCheck = await checkUsageLimit(tenantId, 'feedback_count');
+    if (!limitCheck.allowed) {
+      res.status(429).json({
+        success: false,
+        error: 'Monthly feedback limit reached. Please upgrade your plan.',
+        reason: limitCheck.reason
+      });
+      return;
+    }
+
     // Sanitise message (basic - strip HTML tags)
     const sanitisedMessage = message.replace(/<[^>]*>/g, '').trim();
 
@@ -159,6 +171,14 @@ export async function submitFeedback(req: Request, res: Response): Promise<void>
     ]);
 
     const feedback = result.rows[0];
+
+    // Increment usage counter
+    try {
+      await incrementUsage(tenantId, 'feedback_count', 1);
+    } catch (usageError) {
+      console.error('Failed to increment usage:', usageError);
+      // Don't fail the request if usage tracking fails
+    }
 
     console.log('Feedback submitted:', {
       feedbackId: feedback.id,
