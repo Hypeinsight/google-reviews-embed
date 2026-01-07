@@ -1128,3 +1128,57 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
 
 **Files changed:**
   - api/index.ts
+
+---
+
+**2026-01-07T12:32:41.475Z** | Branch: `main` | Commit: `70a0083`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix TypeScript compilation errors for production build
+
+**Files changed:**
+  - TESTING_BILLING.md
+  - api/auth/middleware.ts
+  - api/billing/stripe.ts
+  - api/billing/webhooks.ts
+  - dist/api/admin/migrate.js
+  - dist/api/auth/login.js
+  - dist/api/auth/middleware.js
+  - dist/api/billing/pricing.js
+  - dist/api/billing/stripe.js
+  - dist/api/billing/subscriptions.js
+  - dist/api/billing/usage.js
+  - dist/api/billing/webhooks.js
+  - dist/api/client/dashboard.js
+  - dist/api/feedback.js
+  - dist/api/index.js
+  - docs/CHANGE_LOG.md
+  - scripts/verify_user.js
+
+---
+
+**2026-01-07T12:33:16.316Z** | Branch: `main` | Commit: `28c9761`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix TypeScript compilation errors for production build
+
+**Files changed:**
+  - TESTING_BILLING.md
+  - api/auth/middleware.ts
+  - api/billing/stripe.ts
+  - api/billing/webhooks.ts
+  - dist/api/admin/migrate.js
+  - dist/api/auth/login.js
+  - dist/api/auth/middleware.js
+  - dist/api/billing/pricing.js
+  - dist/api/billing/stripe.js
+  - dist/api/billing/subscriptions.js
+  - dist/api/billing/usage.js
+  - dist/api/billing/webhooks.js
+  - dist/api/client/dashboard.js
+  - dist/api/feedback.js
+  - dist/api/index.js
+  - docs/CHANGE_LOG.md
+  - scripts/verify_user.js

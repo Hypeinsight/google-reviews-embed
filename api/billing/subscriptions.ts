@@ -66,8 +66,8 @@ export async function createCheckoutSession(
           quantity: 1,
         },
       ],
-      success_url: `${process.env.API_BASE_URL || 'http://localhost:3000'}/client/subscription.html?success=true`,
-      cancel_url: `${process.env.API_BASE_URL || 'http://localhost:3000'}/client/subscription.html?canceled=true`,
+      success_url: `${process.env.API_BASE_URL || 'http://localhost:3000'}/client/dashboard.html?success=true`,
+      cancel_url: `${process.env.API_BASE_URL || 'http://localhost:3000'}/client/dashboard.html?canceled=true`,
       metadata: {
         tenant_id: tenant.id,
       },
@@ -117,7 +117,7 @@ export async function createPortalSession(
     // Create portal session
     const session = await stripe.billingPortal.sessions.create({
       customer: customerId,
-      return_url: `${process.env.API_BASE_URL || 'http://localhost:3000'}/client/subscription.html`,
+      return_url: `${process.env.API_BASE_URL || 'http://localhost:3000'}/client/dashboard.html`,
     });
 
     res.json({
