@@ -54,6 +54,7 @@ app.use(cors({
 const publicPath = path.join(__dirname, '..', '..', 'public');
 app.use('/embed', express.static(publicPath));
 app.use('/admin', express.static(path.join(publicPath, 'admin')));
+app.use('/client', express.static(path.join(publicPath, 'client')));
 app.use(express.static(publicPath));
 
 // Health check endpoint
