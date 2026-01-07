@@ -150,8 +150,8 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
       [
         subscription.status,
         planTier,
-        new Date(subscription.current_period_start * 1000),
-        new Date(subscription.current_period_end * 1000),
+        new Date((subscription as any).current_period_start * 1000),
+        new Date((subscription as any).current_period_end * 1000),
         subscription.cancel_at_period_end,
         subscription.canceled_at ? new Date(subscription.canceled_at * 1000) : null,
         subscription.id,
@@ -176,8 +176,8 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
         customerId,
         planTier,
         subscription.status,
-        new Date(subscription.current_period_start * 1000),
-        new Date(subscription.current_period_end * 1000),
+        new Date((subscription as any).current_period_start * 1000),
+        new Date((subscription as any).current_period_end * 1000),
         subscription.cancel_at_period_end,
       ]
     );

@@ -4,6 +4,7 @@ exports.getFeedback = getFeedback;
 exports.submitFeedback = submitFeedback;
 const db_1 = require("./db");
 const email_1 = require("./email");
+const usage_1 = require("./billing/usage");
 /**
  * POST /api/feedback
  *
@@ -94,6 +95,16 @@ async function submitFeedback(req, res) {
             });
             return;
         }
+        // Check usage limits
+        const limitCheck = await (0, usage_1.checkUsageLimit)(tenantId, 'feedback_count');
+        if (!limitCheck.allowed) {
+            res.status(429).json({
+                success: false,
+                error: 'Monthly feedback limit reached. Please upgrade your plan.',
+                reason: limitCheck.reason
+            });
+            return;
+        }
         // Sanitise message (basic - strip HTML tags)
         const sanitisedMessage = message.replace(/<[^>]*>/g, '').trim();
         if (sanitisedMessage.length === 0) {
@@ -139,6 +150,14 @@ async function submitFeedback(req, res) {
             sessionId || null
         ]);
         const feedback = result.rows[0];
+        // Increment usage counter
+        try {
+            await (0, usage_1.incrementUsage)(tenantId, 'feedback_count', 1);
+        }
+        catch (usageError) {
+            console.error('Failed to increment usage:', usageError);
+            // Don't fail the request if usage tracking fails
+        }
         console.log('Feedback submitted:', {
             feedbackId: feedback.id,
             tenantId,

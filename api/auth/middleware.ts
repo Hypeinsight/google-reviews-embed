@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 
 export interface AuthRequest extends Request {
   user?: {
@@ -79,9 +79,9 @@ export function generateToken(payload: {
     throw new Error('JWT_SECRET not configured');
   }
 
-  const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
-
-  return jwt.sign(payload, jwtSecret, { expiresIn });
+  return jwt.sign(payload, jwtSecret, {
+    expiresIn: (process.env.JWT_EXPIRES_IN || '7d') as string,
+  } as SignOptions);
 }
 
 /**

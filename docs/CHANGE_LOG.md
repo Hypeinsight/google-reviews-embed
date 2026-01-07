@@ -1102,3 +1102,29 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - public/client/index.html
   - scripts/create_client_user.js
   - scripts/run_billing_migration.js
+
+---
+
+**2026-01-07T12:14:40.741Z** | Branch: `main` | Commit: `a758ee5`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Fix SSL config in create_client_user script and add list_tenants helper
+
+**Files changed:**
+  - docs/CHANGE_LOG.md
+  - docs/TECH_STACK.md
+  - scripts/create_client_user.js
+  - scripts/list_tenants.js
+  - scripts/run_billing_migration.js
+
+---
+
+**2026-01-07T12:23:30.218Z** | Branch: `main` | Commit: `c3ad9f5`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add /client static route for client dashboard
+
+**Files changed:**
+  - api/index.ts
