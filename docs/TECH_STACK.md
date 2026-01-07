@@ -12,16 +12,24 @@
 | Package | Version |
 |---------|---------|
 | @sendgrid/mail | ^8.1.6 |
+| @types/bcrypt | ^6.0.0 |
+| @types/cookie-parser | ^1.4.10 |
 | @types/cors | ^2.8.19 |
 | @types/express | ^4.17.21 |
+| @types/jsonwebtoken | ^9.0.10 |
 | @types/node | ^20.10.0 |
 | @types/pg | ^8.15.5 |
+| bcrypt | ^6.0.0 |
 | body-parser | ^2.2.0 |
+| cookie-parser | ^1.4.7 |
 | cors | ^2.8.5 |
 | dotenv | ^17.2.3 |
 | express | ^4.18.2 |
+| express-rate-limit | ^8.2.1 |
+| jsonwebtoken | ^9.0.3 |
 | pg | ^8.16.3 |
 | qrcode | ^1.5.4 |
+| stripe | ^20.1.1 |
 | tsx | ^4.7.0 |
 | typescript | ^5.3.3 |
 
@@ -58,3 +66,4 @@
 - **2025-10-26**: Added: body-parser, cors, dotenv, pg, @types/cors, @types/pg
 - **2025-10-26**: Added: qrcode
 - **2025-11-07**: Added: @sendgrid/mail
+- **2026-01-07**: Added: @types/bcrypt, @types/cookie-parser, @types/jsonwebtoken, bcrypt, cookie-parser, express-rate-limit, jsonwebtoken, stripe

@@ -7,13 +7,21 @@ const { Pool } = require('pg');
 require('dotenv').config();
 
 async function runMigration() {
-  const pool = new Pool({
-    host: process.env.DB_HOST || 'localhost',
-    port: parseInt(process.env.DB_PORT || '5432'),
-    database: process.env.DB_NAME || 'google_reviews_embed',
-    user: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD,
-  });
+  // Use DATABASE_URL if available (Render), otherwise individual vars
+  const pool = new Pool(
+    process.env.DATABASE_URL
+      ? {
+          connectionString: process.env.DATABASE_URL,
+          ssl: { rejectUnauthorized: false },
+        }
+      : {
+          host: process.env.DB_HOST || 'localhost',
+          port: parseInt(process.env.DB_PORT || '5432'),
+          database: process.env.DB_NAME || 'google_reviews_embed',
+          user: process.env.DB_USER || 'postgres',
+          password: process.env.DB_PASSWORD,
+        }
+  );
 
   try {
     console.log('🚀 Running billing migration...\n');

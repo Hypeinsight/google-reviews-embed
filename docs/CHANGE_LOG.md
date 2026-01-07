@@ -1069,3 +1069,36 @@ This file is automatically updated by git hooks on commit, merge, and checkout e
   - docs/CHANGE_LOG.md
   - public/embed-inline.js
   - public/embed-page.js
+
+---
+
+**2026-01-07T12:09:43.310Z** | Branch: `main` | Commit: `cbe4b3f`
+
+**Author:** Hypeinsight <analytics@hypeinsight.com>
+
+**Message:** Add Stripe billing system and client dashboard
+
+**Files changed:**
+  - .env.example
+  - BILLING_SETUP.md
+  - RENDER_MIGRATION_STEPS.md
+  - api/admin/migrate.ts
+  - api/auth/login.ts
+  - api/auth/middleware.ts
+  - api/billing/pricing.ts
+  - api/billing/stripe.ts
+  - api/billing/subscriptions.ts
+  - api/billing/usage.ts
+  - api/billing/webhooks.ts
+  - api/client/dashboard.ts
+  - api/feedback.ts
+  - api/index.ts
+  - db/migration_billing.sql
+  - db/update_stripe_prices.sql
+  - docs/CHANGE_LOG.md
+  - landing page/Hype Insight - Review Management.svg
+  - package.json
+  - public/client/dashboard.html
+  - public/client/index.html
+  - scripts/create_client_user.js
+  - scripts/run_billing_migration.js
